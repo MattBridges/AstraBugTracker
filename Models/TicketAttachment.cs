@@ -13,12 +13,12 @@ namespace AstraBugTracker.Models
         [DataType(DataType.Date)]
         public DateTime Created { get; set; }
         
-        public byte[]? ImageData { get; set; }
+        public byte[]? FileData { get; set; }
         
-        public string? ImageType { get; set; }
+        public string? FileType { get; set; }
         
         [NotMapped]
-        public IFormFile? ImageFile { get; set; }
+        public IFormFile? FormFile { get; set; }
 
         //Forign Keys
         public int? TicketId { get; set;}

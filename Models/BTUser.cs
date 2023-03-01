@@ -22,10 +22,10 @@ namespace AstraBugTracker.Models
             get { return $"{FirstName} {LastName}"; }
         }
 
-        public byte[]? ImageData { get; set; }
-        public string? ImageType { get; set; }
+        public byte[]? ImageFileData { get; set; }
+        public string? ImageFileType { get; set; }
         [NotMapped]
-        public virtual IFormFile? ImageFile { get; set; }
+        public virtual IFormFile? ImageFormFile { get; set; }
 
         //Forign Keys
         public int CompanyId { get; set; }

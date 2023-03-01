@@ -14,12 +14,12 @@ namespace AstraBugTracker.Models
         [StringLength(500, ErrorMessage = "The {0} must be at least {2} and at most {1} characters", MinimumLength = 2)]
         public string? Description { get; set; }
         
-        public byte[]? ImageData { get; set; }
+        public byte[]? ImageFileData { get; set; }
         
-        public string? ImageType { get; set; }
+        public string? ImageFileType { get; set; }
         
         [NotMapped]
-        public IFormFile? ImageFile { get; set; }
+        public IFormFile? ImageFormFile { get; set; }
 
         //Navigation Properties
         public virtual ICollection<Project> Projects { get; set; } = new HashSet<Project>();

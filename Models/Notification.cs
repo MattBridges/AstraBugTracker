@@ -32,15 +32,15 @@ namespace AstraBugTracker.Models
         public string? RecipientId { get; set;}
 
         //Navigation Properties
-        public NotificationType? NotificationType { get; set; }
+        public virtual NotificationType? NotificationType { get; set; }
         
-        public Ticket? Ticket { get; set; }
+        public virtual Ticket? Ticket { get; set; }
         
-        public Project? Project { get; set; }
+        public virtual Project? Project { get; set; }
         
-        public BTUser? Sender { get; set; }
+        public virtual BTUser? Sender { get; set; }
         
-        public BTUser? Recipient { get; set; }
+        public virtual BTUser? Recipient { get; set; }
 
 
     }

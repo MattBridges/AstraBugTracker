@@ -26,27 +26,27 @@ namespace AstraBugTracker.Models
         
         public int ProjectPriorityId { get; set; }
         
-        public byte[]? ImageData { get; set; }
+        public byte[]? ImageFileData { get; set; }
         
-        public string? ImageType { get; set; }
+        public string? ImageFileType { get; set; }
         
         [NotMapped]
-        public IFormFile? ImageFile { get; set; }
+        public IFormFile? ImageFormFile { get; set; }
         
         public bool Archived { get; set; }
 
 
         //Forign Keys
-        public virtual int CompanyId { get; set; }
+        public int CompanyId { get; set; }
 
 
         //Navigation Properties
         public virtual Company? Company { get; set; }
         
-        public virtual string? ProjectPriority { get;set; }
+        public virtual ProjectPriority? ProjectPriority { get;set; }
         
         public virtual ICollection<BTUser> Members { get;set; } = new HashSet<BTUser>();
         
-        public virtual ICollection<Ticket>? Tickets { get;set; } = new HashSet<Ticket>();
+        public virtual ICollection<Ticket> Tickets { get;set; } = new HashSet<Ticket>();
     }
 }

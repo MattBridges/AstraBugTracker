@@ -29,7 +29,7 @@ namespace AstraBugTracker.Models
 
 
         //Forign Keys
-        public virtual int TicketId { get; set; }
+        public int TicketId { get; set; }
 
         //Navigation Properties
         public virtual Ticket? Ticket { get; set; }

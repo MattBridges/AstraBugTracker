@@ -10,7 +10,7 @@ namespace AstraBugTracker.Models
         public DateTime InviteDate { get; set; }
 
         [DataType(DataType.Date)]
-        public DateTime JoinDate { get; set; }
+        public DateTime? JoinDate { get; set; }
 
         public Guid CompanyToken { get; set; }
 
@@ -36,9 +36,9 @@ namespace AstraBugTracker.Models
         public int ProjectId { get; set; }
 
         [Required]
-        public virtual string? InvitorId { get; set; }
+        public string? InvitorId { get; set; }
 
-        public virtual string? InviteeId { get; set; }
+        public string? InviteeId { get; set; }
 
         //Navigation Properties
         public virtual Company? Company { get; set; }
