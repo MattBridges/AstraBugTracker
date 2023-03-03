@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AstraBugTracker.Data;
 using AstraBugTracker.Models;
+using AstraBugTracker.Services.Interfaces;
 
 namespace AstraBugTracker.Controllers
 {
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTFileService _fileService;
 
-        public ProjectsController(ApplicationDbContext context)
+        public ProjectsController(ApplicationDbContext context, IBTFileService fileService)
         {
             _context = context;
+            _fileService = fileService;
         }
 
         // GET: Projects
@@ -53,7 +56,11 @@ namespace AstraBugTracker.Controllers
         {
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
-            return View();
+
+            Project project = new Project();
+            project.StartDate = DataUtility.GetPostGresDate(DateTime.UtcNow);
+            project.EndDate = DataUtility.GetPostGresDate(DateTime.UtcNow);
+            return View(project);
         }
 
         // POST: Projects/Create
@@ -61,7 +68,7 @@ namespace AstraBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,Archived,CompanyId")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived,CompanyId")] Project project)
         {
             
             if (ModelState.IsValid)
@@ -70,6 +77,13 @@ namespace AstraBugTracker.Controllers
                 project.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
                 project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
                 project.EndDate = DataUtility.GetPostGresDate(project.EndDate);
+
+                //Image Service
+                if (project.ImageFormFile != null)
+                {
+                    project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
+                    project.ImageFileType = project.ImageFormFile.ContentType;
+                }
 
                 _context.Add(project);
                 await _context.SaveChangesAsync();
@@ -103,7 +117,7 @@ namespace AstraBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,Archived,CompanyId")] Project project)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived,CompanyId")] Project project)
         {
             if (id != project.Id)
             {
@@ -115,10 +129,16 @@ namespace AstraBugTracker.Controllers
                 try
                 {
                     //Reformat Dates
-                    project.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+                    project.Created = DataUtility.GetPostGresDate(project.Created);
                     project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
                     project.EndDate = DataUtility.GetPostGresDate(project.EndDate);
 
+                    //Image Service
+                    if (project.ImageFormFile != null)
+                    {
+                        project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
+                        project.ImageFileType = project.ImageFormFile.ContentType;
+                    }
 
 
 

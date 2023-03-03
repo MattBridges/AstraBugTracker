@@ -20,3 +20,15 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.sidebar-logo {
+    width: 255px !important;
+}
+.theme-logo{
+    width:255px !important;
+}
+
+.header-container{
+    max-height:70px !important;
+}
+
