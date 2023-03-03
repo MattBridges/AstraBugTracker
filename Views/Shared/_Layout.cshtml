@@ -16,7 +16,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <title>In Tracker</title>
-    <link rel="icon" type="image/x-icon" href="~/src/assets/img/favicon.ico" />
+    <link rel="icon" type="image/x-icon" href="~/img/in-tracker-website-favicon-color.png" />
     <link href="~/layou ts/modern-dark-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
     <link href="~/layouts/modern-dark-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
     <script src="~/layouts/modern-dark-menu/loader.js"></script>
@@ -31,8 +31,20 @@
     <link href="~/src/plugins/src/apex/apexcharts.css" rel="stylesheet" type="text/css">
     <link href="~/src/assets/css/light/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
     <link href="~/src/assets/css/dark/dashboard/dash_1.css" rel="stylesheet" type="text/css" />
+    <link href="~/src/plugins/src/flatpickr/flatpickr.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="~/src/plugins/src/filepond/filepond.min.css">
+    <link rel="stylesheet" href="~/src/plugins/src/filepond/FilePondPluginImagePreview.min.css">
+
+    <link href="~/src/plugins/css/light/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
+    <link href="~/src/plugins/css/light/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
+    <link href="~/src/assets/css/light/apps/invoice-add.css" rel="stylesheet" type="text/css" />
+
+    <link href="~/src/plugins/css/dark/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
+    <link href="~/src/plugins/css/dark/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
+    <link href="~/src/assets/css/dark/apps/invoice-add.css" rel="stylesheet" type="text/css" />
+
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
-    <link href="~/css/site.css" rel="stylesheet" type="text/css"/>
+    <link href="~/css/site.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="layout-boxed">
     <!-- BEGIN LOADER -->
@@ -54,11 +66,11 @@
 
             <div class="search-animated toggle-search">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            @*    <form class="form-inline search-full form-inline search" role="search">
-                    <div class="search-bar">
-                        <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search...">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                    </div>
+                @*    <form class="form-inline search-full form-inline search" role="search">
+                <div class="search-bar">
+                <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search...">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                </div>
                 </form>
                 <span class="badge badge-secondary">Ctrl + /</span>*@
             </div>
@@ -255,13 +267,13 @@
                             <button asp-area="Identity" asp-page="/Account/Login" type="submit" class="btn btn-primary">Login</button>
                         </form>
                         <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                         
+
                         </a>
-                        
+
                     </li>
 
                     <li class="dropdown-item px-2">
-                      
+
                     </li>
                 }
 
@@ -309,7 +321,6 @@
                 <div class="shadow-bottom"></div>
 
                 <ul class="list-unstyled menu-categories" id="accordionExample">
-          
 
 
 
@@ -319,24 +330,25 @@
 
 
 
- @*                   <li class="menu active">
-                        <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
-                            <div class="">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                                <span>Dashboard</span>
-                            </div>
-                            <div>
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                            </div>
-                        </a>
-                        <ul class="collapse submenu list-unstyled show" id="dashboard" data-bs-parent="#accordionExample">
-                            <li class="active">
-                                <a href="./index.html"> Analytics </a>
-                            </li>
-                            <li>
-                                <a href="./index2.html"> Sales </a>
-                            </li>
-                        </ul>
+
+                    @*                   <li class="menu active">
+                    <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
+                    <div class="">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    <span>Dashboard</span>
+                    </div>
+                    <div>
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                    </div>
+                    </a>
+                    <ul class="collapse submenu list-unstyled show" id="dashboard" data-bs-parent="#accordionExample">
+                    <li class="active">
+                    <a href="./index.html"> Analytics </a>
+                    </li>
+                    <li>
+                    <a href="./index2.html"> Sales </a>
+                    </li>
+                    </ul>
                     </li>*@
                     @if (User.Identity!.IsAuthenticated)
                     {
@@ -386,14 +398,9 @@
                             </ul>
                         </li>
                     }
-                    else
-                    {
-                        <form class="form-inline user" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                            <button asp-area="Identity" asp-page="/Account/Login" type="submit" class="btn btn-primary">Login To Start</button>
-                        </form>      
-                    }
+
                 </ul>
-                    
+
             </nav>
 
         </div>
@@ -401,13 +408,11 @@
         <div id="content" class="main-content">
             @RenderBody()
             <!--  BEGIN FOOTER  -->
-            <div class="footer-wrapper">
-                <div class="footer-section f-section-1">
-                    <p class="">Copyright © <span class="dynamic-year">2022</span> <a target="_blank" href="https://designreset.com/cork-admin/">DesignReset</a>, All rights reserved.</p>
+            <div class="footer-wrapper  ">
+                <div class="footer-section mx-auto">
+                    <p class="text-center">Copyright © <span class="dynamic-year">2023</span> <a target="_blank" href="https://www.MattBridges.dev">Matt Bridges</a>, All rights reserved.</p>
                 </div>
-                <div class="footer-section f-section-2">
-                    <p class="">Coded with <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg></p>
-                </div>
+
             </div>
             <!--  END FOOTER  -->
         </div>
@@ -415,7 +420,11 @@
 
 
 
-
+    <!--Feather Scripts-->
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        feather.replace()
+    </script>
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
     <script src="~/src/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js"></script>
@@ -426,6 +435,16 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     <script src="~/src/plugins/src/apex/apexcharts.min.js"></script>
     <script src="~/src/assets/js/dashboard/dash_1.js"></script>
+    <script src="~/src/plugins/src/filepond/filepond.min.js"></script>
+    <script src="~/src/plugins/src/filepond/FilePondPluginFileValidateType.min.js"></script>
+    <script src="~/src/plugins/src/filepond/FilePondPluginImageExifOrientation.min.js"></script>
+    <script src="~/src/plugins/src/filepond/FilePondPluginImagePreview.min.js"></script>
+    <script src="~/src/plugins/src/filepond/FilePondPluginImageCrop.min.js"></script>
+    <script src="~/src/plugins/src/filepond/FilePondPluginImageResize.min.js"></script>
+    <script src="~/src/plugins/src/filepond/FilePondPluginImageTransform.min.js"></script>
+    <script src="~/src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
+    <script src="~/src/plugins/src/flatpickr/flatpickr.js"></script>
+    <script src="~/src/assets/js/apps/invoice-add.js"></script>
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

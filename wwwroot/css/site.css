@@ -31,4 +31,6 @@ body {
 .header-container{
     max-height:70px !important;
 }
-
+textarea {
+    resize: none;
+}

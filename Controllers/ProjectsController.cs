@@ -54,6 +54,8 @@ namespace AstraBugTracker.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
+            IEnumerable<Company> companies = _context.Companies.ToList();
+            
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id");
 
