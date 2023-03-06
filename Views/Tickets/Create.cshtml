@@ -4,79 +4,117 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
+<head>
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/dark/editors/quill/quill.snow.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/light/editors/quill/quill.snow.css">
+</head>
 
-<h4>Ticket</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
+
+<h1 class="text-center pt-3">Create Ticket</h1>
+<div class="layout-px-spacing">    
+    <div class="middle-content container-xxl">
+               <form asp-action="Create" onsubmit="GetQuillInput()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
+            <input type="hidden" id="quillEditor" asp-for="@Model.Description"/>
+        <div class="row layout-spacing layout-top-spacing">
+            @*Main Area*@
+            <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
+                <div class="widget-content widget-content-area blog-create-section">
+                    @*Ticket Name*@
+                    @*TODO: The Width is being set by the post-title id*@
+                    <div class="row mb-1" style="width:994px !important;margin:auto">
+                        <div class="col-sm-12">
+                            <input asp-for="Title" type="text" class="form-control mt-4" placeholder="Ticket Name">
+                            <span asp-validation-for="Title" class="text-danger"></span>
+                        </div>
+                    </div>
+                    @*Ticket Details*@
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div id="basic" class="row layout-spacing">
+                                <div class="col-lg-12">
+                                    <div class="statbox widget box box-shadow form-control g-0">
+                                        <div class="widget-content widget-content-area">
+                                             <div id="editor-container" class="ql-container ql-snow " style="height:25vh;margin-top:-1px !important;">
+                                                 <div asp-for="Description" class="ql-editor" data-gramm="false" contenteditable="true" data-placeholder="Ticket details"></div>
+                                                 <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
+                                                 <div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>
+                                             </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+      
             </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
+            @*Side Bar*@
+            <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-xxl-0 mt-4">
+                <div class="widget-content widget-content-area blog-create-section">
+                    <div class="row">
+                        @*TODO:make this a select list*@
+                        <div class="form-group">
+                            <label asp-for="ProjectId" class="control-label">Project</label>
+                            <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TicketTypeId" class="control-label"></label>
+                            <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TicketStatusId" class="control-label"></label>
+                            <select asp-for="TicketStatusId" class="form-control" asp-items="ViewBag.TicketStatusId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="TicketPriorityId" class="control-label"></label>
+                            <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="DeveloperUserId" class="control-label"></label>
+                            <select asp-for="DeveloperUserId" class="form-control" asp-items="ViewBag.DeveloperUserId"></select>
+                        </div>
+
+
+                        <div class="col-xxl-12 col-sm-4 col-12 mx-auto">
+                                <input type="submit" value="Create Ticket" class="btn btn-secondary" />
+                        </div>
+                    </div>
+                </div>
+
+              
             </div>
-@*            <div class="form-group">
-                <label asp-for="Created" class="control-label"></label>
-                <input asp-for="Created" class="form-control" />
-                <span asp-validation-for="Created" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Updated" class="control-label"></label>
-                <input asp-for="Updated" class="form-control" />
-                <span asp-validation-for="Updated" class="text-danger"></span>
-            </div>*@
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Archived" /> @Html.DisplayNameFor(model => model.Archived)
-                </label>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="ArchivedByProject" /> @Html.DisplayNameFor(model => model.ArchivedByProject)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="ProjectId" class="control-label"></label>
-                <select asp-for="ProjectId" class ="form-control" asp-items="ViewBag.ProjectId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TicketTypeId" class="control-label"></label>
-                <select asp-for="TicketTypeId" class ="form-control" asp-items="ViewBag.TicketTypeId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TicketStatusId" class="control-label"></label>
-                <select asp-for="TicketStatusId" class ="form-control" asp-items="ViewBag.TicketStatusId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="TicketPriorityId" class="control-label"></label>
-                <select asp-for="TicketPriorityId" class ="form-control" asp-items="ViewBag.TicketPriorityId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="DeveloperUserId" class="control-label"></label>
-                <select asp-for="DeveloperUserId" class ="form-control" asp-items="ViewBag.DeveloperUserId"></select>
-            </div>
-   @*         <div class="form-group">
-                <label asp-for="SubmitterUserId" class="control-label"></label>
-                <select asp-for="SubmitterUserId" class ="form-control" asp-items="ViewBag.SubmitterUserId"></select>
-            </div>*@
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
+            </form>
+
     </div>
+
 </div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
 
+
+
+
+<script src="~/src/plugins/src/editors/quill/quill.js"></script>
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }
+<script>
+
+    var quill = new Quill('#editor-container', {
+        modules: {
+            toolbar: [
+                [{ header: [1, 2, false] }],
+                ['bold', 'italic', 'underline'],
+                ['image', 'code-block']
+            ]
+        },
+        placeholder: 'Enter Ticket Details',
+        theme: 'snow'  // or 'bubble'
+    });
+    function GetQuillInput(){
+        document.getElementById('quillEditor').value = quill.root.innerHTML;
+    }
+</script>

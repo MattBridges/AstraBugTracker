@@ -16,16 +16,20 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <title>In Tracker</title>
+
     <link rel="icon" type="image/x-icon" href="~/img/in-tracker-website-favicon-color.png" />
-    <link href="~/layou ts/modern-dark-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
+    <link href="~/layouts/modern-dark-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
     <link href="~/layouts/modern-dark-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
     <script src="~/layouts/modern-dark-menu/loader.js"></script>
-
+    
+    <link href="~/src/assets/css/light/elements/popover.css" rel="stylesheet" type="text/css">
+    <link href="~/src/assets/css/dark/elements/popover.css" rel="stylesheet" type="text/css">
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
     <link href="~/src/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
     <link href="~/layouts/modern-dark-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
     <link href="~/layouts/modern-dark-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
+
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <link href="~/src/plugins/src/apex/apexcharts.css" rel="stylesheet" type="text/css">
@@ -42,6 +46,14 @@
     <link href="~/src/plugins/css/dark/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
     <link href="~/src/plugins/css/dark/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
     <link href="~/src/assets/css/dark/apps/invoice-add.css" rel="stylesheet" type="text/css" />
+
+    
+
+    <link href="~/src/assets/css/light/components/list-group.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="~/src/assets/css/light/widgets/modules-widgets.css">    
+
+    <link href="~/src/assets/css/dark/components/list-group.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" type="text/css" href="~/src/assets/css/dark/widgets/modules-widgets.css">   
 
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
@@ -68,7 +80,7 @@
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
                 @*    <form class="form-inline search-full form-inline search" role="search">
                 <div class="search-bar">
-                <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search...">
+                <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search~.">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
                 </div>
                 </form>
@@ -79,14 +91,14 @@
 
                 <li class="nav-item dropdown language-dropdown">
                     <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="../src/assets/img/1x1/us.svg" class="flag-width" alt="flag">
+                        <img src="~/src/assets/img/1x1/us.svg" class="flag-width" alt="flag">
                     </a>
                     <div class="dropdown-menu position-absolute" aria-labelledby="language-dropdown">
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="../src/assets/img/1x1/us.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;English</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="../src/assets/img/1x1/tr.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Turkish</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="../src/assets/img/1x1/br.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Portuguese</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="../src/assets/img/1x1/in.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Hindi</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="../src/assets/img/1x1/de.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;German</span></a>
+                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/us.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;English</span></a>
+                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/tr.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Turkish</span></a>
+                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/br.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Portuguese</span></a>
+                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/in.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Hindi</span></a>
+                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/de.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;German</span></a>
                     </div>
                 </li>
 
@@ -109,7 +121,7 @@
                         <div class="notification-scroll">
                             <div class="dropdown-item">
                                 <div class="media server-log">
-                                    <img src="../src/assets/img/profile-16.jpeg" class="img-fluid me-2" alt="avatar">
+                                    <img src="~/src/assets/img/profile-16.jpeg" class="img-fluid me-2" alt="avatar">
                                     <div class="media-body">
                                         <div class="data-info">
                                             <h6 class="">Kara Young</h6>
@@ -125,7 +137,7 @@
 
                             <div class="dropdown-item">
                                 <div class="media ">
-                                    <img src="../src/assets/img/profile-15.jpeg" class="img-fluid me-2" alt="avatar">
+                                    <img src="~/src/assets/img/profile-15.jpeg" class="img-fluid me-2" alt="avatar">
                                     <div class="media-body">
                                         <div class="data-info">
                                             <h6 class="">Daisy Anderson</h6>
@@ -141,7 +153,7 @@
 
                             <div class="dropdown-item">
                                 <div class="media file-upload">
-                                    <img src="../src/assets/img/profile-21.jpeg" class="img-fluid me-2" alt="avatar">
+                                    <img src="~/src/assets/img/profile-21.jpeg" class="img-fluid me-2" alt="avatar">
                                     <div class="media-body">
                                         <div class="data-info">
                                             <h6 class="">Oscar Garner</h6>
@@ -426,7 +438,9 @@
         feather.replace()
     </script>
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    
     <script src="~/src/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/src/assets/js/elements/popovers.js"></script>
     <script src="~/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/src/plugins/src/mousetrap/mousetrap.min.js"></script>
     <script src="~/src/plugins/src/waves/waves.min.js"></script>
@@ -445,6 +459,10 @@
     <script src="~/src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
     <script src="~/src/plugins/src/flatpickr/flatpickr.js"></script>
     <script src="~/src/assets/js/apps/invoice-add.js"></script>
+    
+    <script src="~/src/assets/js/widgets/modules-widgets.js"></script>
+    
+   
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
