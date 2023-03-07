@@ -1,372 +1,168 @@
 ﻿@model AstraBugTracker.Models.Ticket
+@using AstraBugTracker.Services
+@using AstraBugTracker.Services.Interfaces;
+@inject IBTFileService BTFileService;
+@inject IBTTicketService BTTicketService;
 
 @{
     ViewData["Title"] = "Create";
 }
 
-<head>
-    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/dark/editors/quill/quill.snow.css">
-    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/light/editors/quill/quill.snow.css">
-</head>
+<h1>Ticket Details</h1>
 
-<div class="layout-px-spacing">
-    <div class="middle-content container-xxl">
-        <div class="row layout-spacing layout-top-spacing">
-            @*Main Area*@
-            <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
-                <div class="widget-content widget-content-area blog-create-section">
-                    @*Ticket Name*@
-                    @*TODO: The Width is being set by the post-title id*@
-                    <div class="row mb-1" style="width:994px !important;margin:auto">
-                        <div class="col-sm-12">
-                            <input type="text" class="form-control mt-4" id="post-title" placeholder="Ticket Name">
-                        </div>
-                    </div>
-                    @*Ticket Details*@
-                    <div class="row">
-                        <div class="col-sm-12">
-                            @*<label>Ticket Details</label>*@
-                            <div id="basic" class="row layout-spacing">
-                                <div class="col-lg-12">
-                                    <div class="statbox widget box box-shadow form-control g-0">
-                                        <div class="widget-content widget-content-area">
-                                            <div id="editor-container" class="ql-container ql-snow " style="height:25vh;margin-top:-1px !important;"><div class="ql-editor" data-gramm="false" contenteditable="true" data-placeholder="Ticket details"></div><div class="ql-clipboard" contenteditable="true" tabindex="-1"></div><div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div></div>
-                                        </div>
-                                    </div>
+<div>
+    <div classxfont-weighteighteightgetainer-fluid">
+        <div class="row gy-2">
+            <div class="col-md-12 col">
+                <div class="row col-cols-2 mt-5 bg-secondary">
+                    @*Base Details*@
+                    <div class="card col m-1 p-2">
+                        <div class="card-body">
+                            @*Title of Ticket*@
+                            <h5>@Model.Title</h5>
+                            @*Description of Ticket*@
+                            <p>@Model.Description</p>
+                            <div class="progress-container progress-info m-b-25">
+                                @*Project Name and information*@
+                                <span class="progress-badge" style="font-size:small">Project: @Model.Project!.Name</span>
+                                <div class="progress">
+                                    @*Progress bar logic*@
+                                    @*Variable from razor logic*@
+                                    @*<div class="progress-bar" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: [Percent]%;">*@
+                                    @*Variable from razor logic*@
+                                    @*<span class="progress-value">[Percent]%</span>*@
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div class="widget-content widget-content-area blog-create-section mt-5">
-                    @*Comments Area*@
-                    <div class="post-comments">
-
-                        <div class="media mb-5 pb-5 primary-comment">
-                            <!-- <img class="me-4" src="../src/assets/img/profile-2.jpeg" alt="pic1"> -->
-                            <div class="avatar me-4">
-                                <img alt="avatar" src="../src/assets/img/profile-2.jpeg" class="rounded-circle" />
-                            </div>
-                            <div class="media-body">
-                                <h5 class="media-heading mb-1">Daisy Andrason</h5>
-                                <div class="meta-info mb-0">14 April</div>
-                                <p class="media-text mt-2 mb-0">Fusce condimentum cursus mauris et ornare. Mauris fermentum mi id sollicitudin viverra. Aenean dignissim sed ante eget dapibus. Sed dapibus nulla elementum, rutrum neque eu, gravida neque.</p>
-
-                                <!-- <button class="btn btn-success btn-reply">Reply</button> -->
-                                <button class="btn btn-success btn-icon btn-reply btn-rounded">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-edit-2"><path d="M17 3a2.828 2.828 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5L17 3z"></path></svg>
-                                </button>
-
-                                <!--  -->
-                                <div class="media mb-4 mt-4">
-                                    <!-- <img class="me-4" src="../src/assets/img/profile-3.jpeg" alt="pic1"> -->
-                                    <div class="avatar me-4">
-                                        <img alt="avatar" src="../src/assets/img/profile-3.jpeg" class="rounded-circle" />
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="media-heading mb-1">Xavier</h5>
-                                        <div class="meta-info mb-0">15 April</div>
-                                        <p class="media-text mt-2 mb-0">Fusce condimentum cursus mauris et ornare. Mauris fermentum mi id sollicitudin viverra. Aenean dignissim sed ante eget dapibus. Sed dapibus nulla elementum, rutrum neque eu, gravida neque.</p>
-                                    </div>
-                                </div>
-
-                                <div class="media mt-4">
-                                    <!-- <img class="me-4" src="../src/assets/img/profile-25.jpeg" alt="pic1"> -->
-                                    <div class="avatar me-4">
-                                        <img alt="avatar" src="../src/assets/img/profile-25.jpeg" class="rounded-circle" />
-                                    </div>
-                                    <div class="media-body">
-                                        <h5 class="media-heading mb-1">Mary McDonald</h5>
-                                        <div class="meta-info mb-0">15 April</div>
-                                        <p class="media-text mt-2 mb-0">Fusce condimentum cursus mauris et ornare. Mauris fermentum mi id sollicitudin viverra. Aenean dignissim sed ante eget dapibus. Sed dapibus nulla elementum, rutrum neque eu, gravida neque.</p>
-                                    </div>
-                                </div>
-                                <!--  -->
-                            </div>
-                        </div>
-
-
-
-                        @* <div class="post-pagination">
-
-                        <div class="pagination-no_spacing">
-
-                        <ul class="pagination">
-                        <li><a href="javascript:void(0);" class="prev"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-left"><polyline points="15 18 9 12 15 6"></polyline></svg></a></li>
-                        <li><a href="javascript:void(0);">1</a></li>
-                        <li><a href="javascript:void(0);" class="active">2</a></li>
-                        <li><a href="javascript:void(0);">3</a></li>
-                        <li><a href="javascript:void(0);" class="next"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg></a></li>
-                        </ul>
-
-                        </div>
-
-                        </div>
-                        *@
-
-                    </div>
-
-                    @*  <div class="post-form mt-5">
-
-                    <div class="section add-comment">
-                    <div class="info">
-                    <h6 class="">Add Comment</h6>
-                    <p>Add your <span class="text-success">comment</span> to this post.</p>
-
-                    <div class="row mt-4">
-
-                    <div class="col-md-12">
-                    <div class="mb-3">
-                    <label class="form-label">Write Comment</label>
-                    <textarea class="form-control" cols="30" rows="10"></textarea>
-                    </div>
-                    </div>
-                    <div class="col-md-6">
-                    <div class="mb-3">
-                    <label class="form-label">Name</label>
-                    <input type="text" class="form-control">
-                    </div>
-                    </div>
-                    <div class="col-md-6">
-                    <div class="mb-3">
-                    <label class="form-label">Email</label>
-                    <input type="email" class="form-control">
-                    </div>
-                    </div>
-                    </div>
-
-                    <div class="text-end mt-4">
-                    <button class="btn btn-primary me-3">Clear</button>
-                    <button class="btn btn-success">Add Comment</button>
-                    </div>
-                    </div>
-                    </div>
-
-
-                    </div>*@
-                </div>
-            </div>
-            @*Side Bar*@
-            <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-xxl-0 mt-4">
-                <div class="widget-content widget-content-area blog-create-section">
-                    <div class="row">
-                        @*TODO:make this a select list*@
-                        <div class="col-xxl-12 col-md-12 mb-4">
-                            <label for="tags">Project:</label>
-                            <input id="projects" class="blog-tags" value="">
-                        </div>
-                        <div class="col-xxl-12 col-md-12 mb-4">
-                            <label for="tags">Ticket Type:</label>
-                            <input id="projects" class="blog-tags" value="">
-                        </div>
-                        <div class="col-xxl-12 col-md-12 mb-4">
-                            <label for="tags">Ticket Priority:</label>
-                            <input id="projects" class="blog-tags" value="">
-                        </div>
-                        <div class="col-xxl-12 col-md-12 mb-4">
-                            <label for="tags">Developer:</label>
-                            <input id="projects" class="blog-tags" value="">
-                        </div>
-
-
-                        <div class="col-xxl-12 col-sm-4 col-12 mx-auto">
-                            <button class="btn btn-success w-100">Create Post</button>
+                    @*Current Statuses*@
+                    <div class="card col m-1 p-2">
+                        <div class="card-body">
+                            <ul class="list-unstyled">
+                                @*Ticket date*@
+                                <li><strong>Date Entered:</strong> <span class="">  @Model.Created</</span></li>
+                                @*Project end date*@
+                                <li><strong>Deadline:</strong> <span class="">  @Model.Project.EndDate</</span></li>
+                                @*Ticket type*@
+                                <li><strong>Type:</strong> <span class="">  @Model.TicketType</span></li>
+                                @*Ticket priority*@
+                                <li><strong>Priority:</strong> <span class="">@Model.TicketPriority</span></li>
+                                @*Ticket status*@
+                                <li><strong>Status:</strong> <span class=""> @Model.TicketStatus</span></li>
+                            </ul>
                         </div>
                     </div>
-                </div>
-
-                @*Box 2*@
-                <div class="widget-content widget-content-area blog-create-section mt-3">
-
-
-                    <div class="widget widget-activity-four">
-
-                        <div class="widget-heading">
-                            <h5 class="">Recent Activities</h5>
-                        </div>
-
-                        <div class="widget-content">
-
-                            <div class="mt-container-ra mx-auto">
-                                <div class="timeline-line">
-
-                                    <div class="item-timeline timeline-primary">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p><span>Updated</span> Server Logs</p>
-                                            <span class="badge">Pending</span>
-                                            <p class="t-time">Just Now</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline timeline-success">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Send Mail to <a href="javascript:void(0);">HR</a> and <a href="javascript:void(0);">Admin</a></p>
-                                            <span class="badge">Completed</span>
-                                            <p class="t-time">2 min ago</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-danger">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Backup <span>Files EOD</span></p>
-                                            <span class="badge">Pending</span>
-                                            <p class="t-time">14:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-dark">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Collect documents from <a href="javascript:void(0);">Sara</a></p>
-                                            <span class="badge">Completed</span>
-                                            <p class="t-time">16:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-warning">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Conference call with <a href="javascript:void(0);">Marketing Manager</a>.</p>
-                                            <span class="badge">In progress</span>
-                                            <p class="t-time">17:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-secondary">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Rebooted Server</p>
-                                            <span class="badge">Completed</span>
-                                            <p class="t-time">17:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-warning">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Send contract details to Freelancer</p>
-                                            <span class="badge">Pending</span>
-                                            <p class="t-time">18:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-dark">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Kelly want to increase the time of the project.</p>
-                                            <span class="badge">In Progress</span>
-                                            <p class="t-time">19:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-success">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Server down for maintanence</p>
-                                            <span class="badge">Completed</span>
-                                            <p class="t-time">19:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-secondary">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Malicious link detected</p>
-                                            <span class="badge">Block</span>
-                                            <p class="t-time">20:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-warning">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Rebooted Server</p>
-                                            <span class="badge">Completed</span>
-                                            <p class="t-time">23:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline timeline-primary">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p><span>Updated</span> Server Logs</p>
-                                            <span class="badge">Pending</span>
-                                            <p class="t-time">Just Now</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline timeline-success">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Send Mail to <a href="javascript:void(0);">HR</a> and <a href="javascript:void(0);">Admin</a></p>
-                                            <span class="badge">Completed</span>
-                                            <p class="t-time">2 min ago</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-danger">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Backup <span>Files EOD</span></p>
-                                            <span class="badge">Pending</span>
-                                            <p class="t-time">14:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-dark">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Collect documents from <a href="javascript:void(0);">Sara</a></p>
-                                            <span class="badge">Completed</span>
-                                            <p class="t-time">16:00</p>
-                                        </div>
-                                    </div>
-
-                                    <div class="item-timeline  timeline-warning">
-                                        <div class="t-dot" data-original-title="" title="">
-                                        </div>
-                                        <div class="t-text">
-                                            <p>Conference call with <a href="javascript:void(0);">Marketing Manager</a>.</p>
-                                            <span class="badge">In progress</span>
-                                            <p class="t-time">17:00</p>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="tm-action-btn">
-                                <button class="btn"><span>View All</span> <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg></button>
-                            </div>
-                        </div>
-                    </div>
-
                 </div>
             </div>
+            @*Comments*@
+            <div class="col-md-8 col col-cols-2 mt-5 ">
+                <div class="col">
+                    <div class="bg-secondary">
+                        <div class="card m-1 p-2">
+                            <div class="card-header">
+                                <h2>Comments</h2>
+                            </div>
+                            <div class="card-body" style="overflow-y:auto;height:600px;">
+                                <form asp-action="AddTicketComment" asp-route-id="@Model.Id">
+                                    <input name="Comment" type="text" class="w-50" placeholder="Enter a new comment" />
+                                    <input type="submit" class="btn btn-primary" value="Enter Comment" />
+                                </form>
+                                
+                                @*Form and Logic for authorized users to add comments*@
+                                <hr />
+                                <h6>Comments</h6>
+                                <ul class="right_chat list-unstyled mb-0">
+                                    @*Loop to show comments made for the Ticket*@
+                                    @foreach(TicketComment comment in ViewBag.Comments)
+                                    {
+                                        <p>@comment.Comment</p>
+                                    }
+                                </ul>
+                            </div>
+                            <div class="card-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="bg-secondary">
+                        <div class="card m-1 p-2">
+                            <div class="card-header">
+                                <h2>Attachments</h2>
+                            </div>
+                            <div class="card-body" style="overflow-y:auto;height:300px;">
 
+                                @* Refer to the Ticket Attachments document for this section *@
+
+
+                                <div class="row clearfix">
+                                    <div>
+                                        <form asp-action="AddTicketAttachment" asp-controller="Tickets" enctype="multipart/form-data" method="post">
+                                            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                            <input type="hidden" asp-for="@Model.Id" name="TicketId">
+                                            <div class="media-body ml-3">
+                                                <label>
+                                                    Description
+                                                    <input asp-for="@Model.Attachments.FirstOrDefault()!.Description" type="text" placeholder="File Description" class="form-control" />
+                                                </label>
+                                                <label class="btn btn-outline-primary btn-sm">
+                                                    <input asp-for="@Model.Attachments.FirstOrDefault()!.FormFile" type="file" class="form-control-file" />
+                                                </label>
+                                                <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+
+
+                                <hr />
+                                <h6>Attachments</h6>
+                                <div class="container pb-3">
+                                    <div class="row">
+                                        @foreach (TicketAttachment item in Model.Attachments)
+                                        {
+                                            <div class="col col-sm-2">
+                                                <a asp-action="ShowFile" asp-controller="Tickets" asp-route-Id="@item.Id">
+                                                    <div class="icon">
+                                                        <img src="@BTFileService.GetFileIcon(item.FileName!)" style="height:50px;width:50px" data-bs-toggle="tooltip" data-bs-placement="top" title="" data-bs-original-title="@item.FileName" />
+                                                    </div>
+                                                </a>
+                                                <div style="font-size:x-small">
+                                                    <div class="file-name">
+                                                        <strong>@item.Description</strong>
+                                                    </div>
+                                                    <small>Size: @BTFileService.FormatFileSize(item.FileData!.Length) </small>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="card-footer">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*Attachements*@
+            <div class="col-md-4 col mt-5 ">
+                <div class="bg-dark">
+                    <div class="card m-1 p-2">
+                        <div class="card-header">
+                            <h2>History</h2>
+                            <hr />
+                        </div>
+                        <div class="card-body" style="overflow-y:auto;height:1000px;background-color:antiquewhite">
+                            @*Loop to show the history entries for the Ticket*@
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
     </div>
-
 </div>
+
 
 
 

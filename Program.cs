@@ -1,5 +1,7 @@
 using AstraBugTracker.Data;
+using AstraBugTracker.Extensions;
 using AstraBugTracker.Models;
+using AstraBugTracker.Services;
 using AstraBugTracker.Services.Interfaces;
 using CodeIT.Services;
 using Microsoft.AspNetCore.Identity;
@@ -16,13 +18,15 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddIdentity<BTUser, IdentityRole>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddEntityFrameworkStores<ApplicationDbContext>()
+    .AddClaimsPrincipalFactory<BTUserClaimsPrincipalFactory>()
     .AddDefaultUI()
-    .AddDefaultTokenProviders()
-    .AddEntityFrameworkStores<ApplicationDbContext>();
+    .AddDefaultTokenProviders();
 
 //Add Custom Services
 builder.Services.AddScoped<IBTFileService, BTFileService>();
-
+builder.Services.AddScoped<IBTProjectsService, BTProjectsService>();
+builder.Services.AddScoped<IBTTicketService, BTTicketService>();
 
 
 

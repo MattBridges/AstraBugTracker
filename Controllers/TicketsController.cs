@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -8,6 +9,9 @@ using Microsoft.EntityFrameworkCore;
 using AstraBugTracker.Data;
 using AstraBugTracker.Models;
 using Microsoft.AspNetCore.Identity;
+using AstraBugTracker.Services;
+using CodeIT.Services;
+using AstraBugTracker.Services.Interfaces;
 
 namespace AstraBugTracker.Controllers
 {
@@ -15,11 +19,16 @@ namespace AstraBugTracker.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTFileService _fileService;
+		private readonly IBTTicketService _ticketService;
 
-        public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager)
+
+		public TicketsController(ApplicationDbContext context, UserManager<BTUser> userManager,IBTFileService fileService, IBTTicketService ticketService)
         {
             _context = context;
             _userManager = userManager;
+            _fileService = fileService;
+            _ticketService = ticketService;
         }
 
         // GET: Tickets
@@ -45,13 +54,69 @@ namespace AstraBugTracker.Controllers
                 .Include(t => t.TicketPriority)
                 .Include(t => t.TicketStatus)
                 .Include(t => t.TicketType)
+                .Include(t=>t.Attachments)
+                .Include(t=>t.History)
                 .FirstOrDefaultAsync(m => m.Id == id);
+
+            IEnumerable<TicketComment> comments = await _context.TicketComment.Where(t=>t.TicketId== id).ToListAsync();
+            ViewData["Comments"] = comments;
             if (ticket == null)
             {
                 return NotFound();
             }
 
             return View(ticket);
+        }
+		[HttpPost]
+		[ValidateAntiForgeryToken]
+		public async Task<IActionResult> AddTicketAttachment([Bind("Id,FormFile,Description,TicketId")] TicketAttachment ticketAttachment)
+		{
+			string statusMessage;
+            ModelState.Remove("BTUserId");
+			if (ModelState.IsValid && ticketAttachment.FormFile != null)
+            {
+				ticketAttachment.FileData = await _fileService.ConvertFileToByteArrayAsync(ticketAttachment.FormFile);
+                ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
+                ticketAttachment.FileType = ticketAttachment.FormFile.ContentType;
+
+				ticketAttachment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+                ticketAttachment.BTUserId = _userManager.GetUserId(User);
+
+				await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
+				statusMessage = "Success: New attachment added to Ticket.";
+			}
+			else
+			{
+				statusMessage = "Error: Invalid data.";
+
+			}
+
+			return RedirectToAction("Details", new { id = ticketAttachment.TicketId, message = statusMessage });
+		}
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> AddTicketComment(int Id, string comment)
+        {
+            TicketComment ticketComment = new TicketComment();
+            ticketComment.TicketId = Id;
+            ticketComment.Comment = comment;
+            ticketComment.UserId= _userManager.GetUserId(User);
+            ticketComment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+            _context.TicketComment.Add(ticketComment);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Details",new { id = ticketComment.TicketId });
+        }
+
+        public async Task<IActionResult> ShowFile(int id)
+        {
+            TicketAttachment ticketAttachment = await _ticketService.GetTicketAttachmentByIdAsync(id);
+            string? fileName = ticketAttachment.FileName;
+            byte[]? fileData = ticketAttachment.FileData;
+            string? ext = Path.GetExtension(fileName)?.Replace(".", "");
+
+            Response.Headers.Add("Content-Disposition", $"inline; filename={fileName}");
+            return File(fileData!, $"application/{ext}");
         }
 
         // GET: Tickets/Create
@@ -79,8 +144,7 @@ namespace AstraBugTracker.Controllers
             {
                 ticket.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
                 ticket.SubmitterUserId = _userManager.GetUserId(User);
-
-                
+          
 
                 _context.Add(ticket);
                 await _context.SaveChangesAsync();

@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using AstraBugTracker.Extensions;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AstraBugTracker.Models
@@ -16,9 +18,15 @@ namespace AstraBugTracker.Models
         public byte[]? FileData { get; set; }
         
         public string? FileType { get; set; }
-        
-        [NotMapped]
-        public IFormFile? FormFile { get; set; }
+
+        public string? FileName { get; set; }
+
+		[NotMapped]
+		[DisplayName("Select a file")]
+		[DataType(DataType.Upload)]
+		[MaxFileSize(1024 * 1024)]
+		[AllowedExtensions(new string[] { ".jpg", ".png", ".doc", ".docx", ".xls", ".xlsx", ".pdf" })]
+		public IFormFile? FormFile { get; set; }
 
         //Forign Keys
         public int? TicketId { get; set;}

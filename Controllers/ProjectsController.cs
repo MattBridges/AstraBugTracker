@@ -8,41 +8,66 @@ using Microsoft.EntityFrameworkCore;
 using AstraBugTracker.Data;
 using AstraBugTracker.Models;
 using AstraBugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using AstraBugTracker.Extensions;
 
 namespace AstraBugTracker.Controllers
 {
+    [Authorize]
     public class ProjectsController : Controller
     {
         private readonly ApplicationDbContext _context;
         private readonly IBTFileService _fileService;
+        private readonly IBTProjectsService _projectsService;
 
-        public ProjectsController(ApplicationDbContext context, IBTFileService fileService)
+        public ProjectsController(ApplicationDbContext context, IBTFileService fileService, IBTProjectsService projectsService)
         {
             _context = context;
             _fileService = fileService;
+            _projectsService = projectsService;
         }
 
         // GET: Projects
         public async Task<IActionResult> Index()
         {
-            IEnumerable<Project> projects= await _context.Projects.Where(p=>p.Archived == false).ToListAsync();
-            
-            var applicationDbContext = _context.Projects.Include(p => p.Company).Include(p => p.ProjectPriority);
+            //IEnumerable<Project> projects= await _context.Projects.Where(p=>p.Archived == false).ToListAsync();
+            int companyId = User.Identity!.GetCompanyId();
+            IEnumerable<Project> projects =await _context.Projects
+                                                            .Where(p=>p.Archived == false && p.CompanyId== companyId)
+                                                            .Include(p=>p.Members)
+                                                            .Include(p=>p.ProjectPriority)
+                                                            .Include(p=>p.Tickets)
+                                                            .ToListAsync();
+
             return View(projects);
         }
 
         // GET: Projects/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Projects == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Projects
-                .Include(p => p.Company)
-                .Include(p => p.ProjectPriority)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            // Remember that the _context should not be used directly in the controller so....     
+
+            // Edit the following code to use the service layer. 
+            // Your goal is to return the 'project' from the databse
+            // with the Id equal to the parameter passed in.               
+            // This is the only modification necessary for this method/action.     
+
+            var project = await _context.Projects.Where(p=>p.CompanyId == User.Identity!.GetCompanyId())
+                                        .Include(p => p.Company)
+                                        .Include(p => p.Members)
+                                        .Include(p => p.ProjectPriority)
+                                        .Include(p => p.Tickets)
+                                            .ThenInclude(t=>t.DeveloperUser)
+                                        .Include(p => p.Tickets)
+                                            .ThenInclude(t=>t.SubmitterUser)
+                                        .FirstOrDefaultAsync(m => m.Id == id);
+
+
             if (project == null)
             {
                 return NotFound();
@@ -87,8 +112,7 @@ namespace AstraBugTracker.Controllers
                     project.ImageFileType = project.ImageFormFile.ContentType;
                 }
 
-                _context.Add(project);
-                await _context.SaveChangesAsync();
+                await _projectsService.AddProjectAsync(project);
                 return RedirectToAction(nameof(Index));
             }
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
