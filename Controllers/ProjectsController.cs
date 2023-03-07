@@ -7,9 +7,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AstraBugTracker.Data;
 using AstraBugTracker.Models;
+using AstraBugTracker.Models.Enums;
 using AstraBugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using AstraBugTracker.Extensions;
+using AstraBugTracker.Models.ViewModels;
+using System.Collections;
 
 namespace AstraBugTracker.Controllers
 {
@@ -19,12 +22,63 @@ namespace AstraBugTracker.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IBTFileService _fileService;
         private readonly IBTProjectsService _projectsService;
+        private readonly IBTRolesService _rolesService;
 
-        public ProjectsController(ApplicationDbContext context, IBTFileService fileService, IBTProjectsService projectsService)
+        public ProjectsController(ApplicationDbContext context, IBTFileService fileService, IBTProjectsService projectsService,IBTRolesService rolesService)
         {
             _context = context;
             _fileService = fileService;
             _projectsService = projectsService;
+            _rolesService = rolesService;
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AssignPM(int? id)
+        {
+            //Validate Id
+            if(id == null)
+            {
+                return NotFound();
+            }
+
+            //Get Company Id
+            int companyId = User.Identity!.GetCompanyId();
+
+            IEnumerable<BTUser> projectManagers = await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.ProjectManager), companyId);
+            BTUser? currentPM = await _projectsService.GetProjectManagerAsync(id);
+
+            AssignPMViewModel viewModel = new(){
+                Project = await _projectsService.GetProjectByIdAsync(id, companyId),
+                PMList = new SelectList(projectManagers, "Id", "FullName", currentPM?.Id),
+                PMId = currentPM?.Id
+            };
+
+            return View(viewModel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> AssignPM(AssignPMViewModel viewModel)
+        {
+            if(!string.IsNullOrEmpty(viewModel.PMId))
+            {
+                await _projectsService.AddProjectManagerAsync(viewModel.PMId, viewModel.Project?.Id);
+                return RedirectToAction("Details",new {id = viewModel.Project?.Id });
+            }
+            //If Null reset the view to get it corrected
+            ModelState.AddModelError("PMID", "No Project Manager Chosen. Please Select a PM");
+            int companyId = User.Identity!.GetCompanyId();
+
+            IEnumerable<BTUser> projectManagers = await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.ProjectManager), companyId);
+            BTUser? currentPM = await _projectsService.GetProjectManagerAsync(viewModel.Project?.Id);
+
+            viewModel.Project = await _projectsService.GetProjectByIdAsync(viewModel.Project?.Id, companyId);
+            viewModel.PMList = new SelectList(projectManagers, "Id", "FullName", currentPM.Id);
+            viewModel.PMId = currentPM?.Id;
+
+            return View(viewModel);
         }
 
         // GET: Projects
@@ -57,7 +111,7 @@ namespace AstraBugTracker.Controllers
             // with the Id equal to the parameter passed in.               
             // This is the only modification necessary for this method/action.     
 
-            var project = await _context.Projects.Where(p=>p.CompanyId == User.Identity!.GetCompanyId())
+            Project? project = await _context.Projects.Where(p=>p.CompanyId == User.Identity!.GetCompanyId())
                                         .Include(p => p.Company)
                                         .Include(p => p.Members)
                                         .Include(p => p.ProjectPriority)
