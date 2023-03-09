@@ -7,24 +7,83 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AstraBugTracker.Data;
 using AstraBugTracker.Models;
+using AstraBugTracker.Models.ViewModels;
+using AstraBugTracker.Extensions;
+using AstraBugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace AstraBugTracker.Controllers
 {
     public class CompaniesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTRolesService _roleService;
+        private readonly IBTCompanyService _companyService;
+        private readonly UserManager<BTUser> _userManager;
 
-        public CompaniesController(ApplicationDbContext context)
+        public CompaniesController(ApplicationDbContext context, IBTRolesService rolesService, IBTCompanyService companyService, UserManager<BTUser> userManager)
         {
             _context = context;
+            _roleService = rolesService;
+            _companyService = companyService;
+            _userManager = userManager;
         }
 
         // GET: Companies
         public async Task<IActionResult> Index()
         {
-              return _context.Companies != null ? 
-                          View(await _context.Companies.ToListAsync()) :
-                          Problem("Entity set 'ApplicationDbContext.Companies'  is null.");
+            return _context.Companies != null ?
+                        View(await _context.Companies.ToListAsync()) :
+                        Problem("Entity set 'ApplicationDbContext.Companies'  is null.");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ManageUserRoles()
+        {
+            List<ManageUserRolesViewModel> viewModels = new();
+            int? companyId = User.Identity!.GetCompanyId();
+
+            List<BTUser> users = await _companyService.GetMembersAsync(companyId);
+            List<IdentityRole> companyRoles = (await _roleService.GetRolesAsync()).ToList();
+
+            foreach(BTUser user in users)
+            {
+                IEnumerable<string> currentRoles = await _roleService.GetUserRolesAsync(user);
+                
+                ManageUserRolesViewModel viewModel = new()
+                {
+                    BTUser = user,
+                    Roles = new MultiSelectList(companyRoles,"Name","Name", currentRoles),
+                };
+                viewModels.Add(viewModel);
+            }
+            return View(viewModels);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> ManageUserRoles(ManageUserRolesViewModel viewModel)
+        {
+
+            int? companyId = User.Identity!.GetCompanyId();
+            BTUser? user = await _userManager.FindByIdAsync(viewModel.BTUser!.Id);
+            if(user == null)
+            {
+                return NotFound();
+            }
+            List<string> currentRoles = (await _roleService.GetUserRolesAsync(user)).ToList();
+            List<string> selectedRoles = viewModel.SelectedRoles!;
+
+            await _roleService.RemoveUserFromRolesAsync(user, currentRoles);
+
+            foreach(string role in selectedRoles)
+            {
+            await _roleService.AddUserToRoleAsync(user, role);
+            }
+           // await _context.SaveChangesAsync();
+
+            return RedirectToAction("Index", "Home");
+
         }
 
         // GET: Companies/Details/5
@@ -150,14 +209,14 @@ namespace AstraBugTracker.Controllers
             {
                 _context.Companies.Remove(company);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
         private bool CompanyExists(int id)
         {
-          return (_context.Companies?.Any(e => e.Id == id)).GetValueOrDefault();
+            return (_context.Companies?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }

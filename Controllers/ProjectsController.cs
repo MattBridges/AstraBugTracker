@@ -81,6 +81,61 @@ namespace AstraBugTracker.Controllers
             return View(viewModel);
         }
 
+        [HttpGet]
+        [Authorize(Roles = "Admin,Project Manager")]
+        public async Task<IActionResult> AssignProjectMembers(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            int companyId = User.Identity!.GetCompanyId();
+            Project? project = await _projectsService.GetProjectByIdAsync(id, companyId);
+            List<BTUser> submitters = await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId);
+            List<BTUser> developers = await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId);
+
+            List<BTUser> userList = submitters.Concat(developers).ToList();
+            List<string>? currentMembers = project.Members.Select(m=>m.Id).ToList();
+
+            ProjectMemberViewModel viewModel = new()
+            {
+                Project = project,
+                UserList = new MultiSelectList(userList,"Id","FullName",currentMembers),
+            };
+
+            return View(viewModel); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Project Manager")]
+        public async Task<IActionResult> AssignProjectMembers(ProjectMemberViewModel viewModel)
+        {
+            int companyId = User.Identity!.GetCompanyId();
+
+            if (viewModel.SelectedMembers !=null)
+            {
+                //Remove current members
+                await _projectsService.RemoveMembersFromProjectAsync(viewModel.Project!.Id, companyId);
+
+                //Add newly selected members
+                await _projectsService.AddMembersToProjectAsync(viewModel.SelectedMembers, viewModel.Project.Id, companyId);
+
+                return RedirectToAction(nameof(Details), new {id = viewModel.Project!.Id});
+            }
+
+            ModelState.AddModelError("SelectedMembers", "No Users Chosen. Please Select Users");
+            //Reset Form
+            viewModel.Project = await _projectsService.GetProjectByIdAsync(viewModel.Project!.Id, companyId);
+            List<string>? currentMembers = viewModel.Project.Members.Select(m => m.Id).ToList();
+            List<BTUser> submitters = await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId);
+            List<BTUser> developers = await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId);
+            List<BTUser> userList = submitters.Concat(developers).ToList();
+
+            return View(viewModel);
+        }
+
         // GET: Projects
         public async Task<IActionResult> Index()
         {

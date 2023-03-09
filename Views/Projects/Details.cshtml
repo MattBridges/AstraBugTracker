@@ -81,14 +81,28 @@
                         <div class="body" style="overflow-y:auto;height:300px;">
                             <ul class="right_chat list-unstyled mb-0">
 
-                                @Model.Members
+                               
                                 @* Logic for avatars *@
                                 @foreach(BTUser member in Model.Members)
                                 {
-                                    <p>@member.UserName</p>
+                                    <p>@member.FullName</p>
                                 }
+                                <div class="avatar--group mb-2">
+                                    <div class="avatar avatar-sm m-0">
+                                        <img alt="avatar" src="../src/assets/img/profile-16.jpeg" class="rounded-circle">
+                                    </div>
+                                    <div class="avatar avatar-sm">
+                                        <img alt="avatar" src="../src/assets/img/delete-user-4.jpeg" class="rounded-circle">
+                                    </div>
+                                    <div class="avatar avatar-sm">
+                                        <img alt="avatar" src="../src/assets/img/profile-5.jpeg" class="rounded-circle">
+                                    </div>
+                                    <div class="avatar avatar-sm">
+                                        <span class="avatar-title rounded-circle">AG</span>
+                                    </div>
+                                </div>
                             </ul>
-
+                            <a class="btn btn-primary" asp-action="AssignProjectMembers" asp-controller="Projects" asp-route-id = "@Model.Id" >Assign Members</a>
                         </div>
                     </div>
                 </div>

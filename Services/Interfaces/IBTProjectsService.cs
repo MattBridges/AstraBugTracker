@@ -11,6 +11,9 @@ namespace AstraBugTracker.Services.Interfaces
         //public Task UpdateProjectAsync(Project project);
         //public Task DeleteProjectAsync(Project project);
 
+        public Task AddMembersToProjectAsync(IEnumerable<string> userId, int? projectId, int? companyId);
+        public Task RemoveMembersFromProjectAsync(int?projectId, int? companyId);
+
         public Task<bool> AddMemberToProjectAsync(int? projectId, BTUser? member);
         public Task<Project> GetProjectByIdAsync(int? projectId, int? companyId);
         public Task<bool> AddProjectManagerAsync(string? userId, int? projectId);
