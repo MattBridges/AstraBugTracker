@@ -80,7 +80,6 @@ namespace AstraBugTracker.Controllers
             {
             await _roleService.AddUserToRoleAsync(user, role);
             }
-           // await _context.SaveChangesAsync();
 
             return RedirectToAction("Index", "Home");
 
