@@ -5,6 +5,7 @@ using AstraBugTracker.Services;
 using AstraBugTracker.Services.Interfaces;
 using CodeIT.Services;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -29,6 +30,7 @@ builder.Services.AddScoped<IBTProjectsService, BTProjectsService>();
 builder.Services.AddScoped<IBTTicketService, BTTicketService>();
 builder.Services.AddScoped<IBTRolesService, BTRolesService>();
 builder.Services.AddScoped<IBTCompanyService, BTCompanyService>();
+builder.Services.AddScoped<IEmailSender, BTEmailService>();
 
 
 

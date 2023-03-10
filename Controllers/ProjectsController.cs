@@ -141,12 +141,7 @@ namespace AstraBugTracker.Controllers
         {
             //IEnumerable<Project> projects= await _context.Projects.Where(p=>p.Archived == false).ToListAsync();
             int companyId = User.Identity!.GetCompanyId();
-            IEnumerable<Project> projects =await _context.Projects
-                                                            .Where(p=>p.Archived == false && p.CompanyId== companyId)
-                                                            .Include(p=>p.Members)
-                                                            .Include(p=>p.ProjectPriority)
-                                                            .Include(p=>p.Tickets)
-                                                            .ToListAsync();
+            IEnumerable<Project> projects = await _projectsService.GetActiveProjectsAsync(companyId);
 
             return View(projects);
         }
@@ -158,23 +153,9 @@ namespace AstraBugTracker.Controllers
             {
                 return NotFound();
             }
+            int companyId = User.Identity!.GetCompanyId();
 
-            // Remember that the _context should not be used directly in the controller so....     
-
-            // Edit the following code to use the service layer. 
-            // Your goal is to return the 'project' from the databse
-            // with the Id equal to the parameter passed in.               
-            // This is the only modification necessary for this method/action.     
-
-            Project? project = await _context.Projects.Where(p=>p.CompanyId == User.Identity!.GetCompanyId())
-                                        .Include(p => p.Company)
-                                        .Include(p => p.Members)
-                                        .Include(p => p.ProjectPriority)
-                                        .Include(p => p.Tickets)
-                                            .ThenInclude(t=>t.DeveloperUser)
-                                        .Include(p => p.Tickets)
-                                            .ThenInclude(t=>t.SubmitterUser)
-                                        .FirstOrDefaultAsync(m => m.Id == id);
+            Project? project = await _projectsService.GetProjectByIdAsync(id.Value, companyId);
 
 
             if (project == null)
@@ -188,15 +169,13 @@ namespace AstraBugTracker.Controllers
         // GET: Projects/Create
         public IActionResult Create()
         {
-            IEnumerable<Company> companies = _context.Companies.ToList();
-            
+            IEnumerable<Company> companies = _context.Companies.ToList();            
             ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
+
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name");
 
-            Project project = new Project();
-            project.StartDate = DataUtility.GetPostGresDate(DateTime.UtcNow);
-            project.EndDate = DataUtility.GetPostGresDate(DateTime.UtcNow);
-            return View(project);
+            
+            return View(new Project());
         }
 
         // POST: Projects/Create

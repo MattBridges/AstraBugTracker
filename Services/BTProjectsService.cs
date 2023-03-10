@@ -39,49 +39,41 @@ namespace AstraBugTracker.Services
             }
         }
 
-        //public async Task DeleteProjectAsync(Project project)
-        //{
-        //    try
-        //    {
-        //        project.Archived = true;
-        //        _context.Projects.Update(project);
-        //        await _context.SaveChangesAsync();
-        //    }
-        //    catch (Exception)
-        //    {
+        public async Task<IEnumerable<Project>> GetActiveProjectsAsync(int? companyId)
+        {
+            try
+            {
+                IEnumerable<Project> projects = await _context.Projects
+                                                            .Where(p => p.Archived == false && p.CompanyId == companyId)
+                                                            .Include(p => p.Members)
+                                                            .Include(p => p.ProjectPriority)
+                                                            .Include(p => p.Tickets)
+                                                            .ToListAsync();
 
-        //        throw;
-        //    }
-        //}
+                return projects;
+            }
+            catch (Exception)
+            {
 
-        //public async Task<IEnumerable<Project>> GetProjectsAsync()
-        //{
-        //    try
-        //    {
-        //        IEnumerable<Project>? projects = await _context.Projects.ToListAsync();
-        //        return projects;
-        //    }
-        //    catch (Exception)
-        //    {
+                throw;
+            }
+        }
 
-        //        throw;
-        //    }
-        //}
+        public async Task DeleteProjectAsync(Project project)
+        {
+            try
+            {
+                project.Archived = true;
+                _context.Projects.Update(project);
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
 
-        //public Task GetProjectsAsync(BTUser user)
-        //{
-        //    throw new NotImplementedException();
-        //}
+                throw;
+            }
+        }
 
-        //public Task GetProjectsAsync(Company company)
-        //{
-        //    throw new NotImplementedException();
-        //}
-
-        //public Task UpdateProjectAsync(Project project)
-        //{
-        //    throw new NotImplementedException();
-        //}
         public async Task<bool> AddMemberToProjectAsync(int? projectId, BTUser? member)
         {
             try
@@ -275,5 +267,18 @@ namespace AstraBugTracker.Services
                 throw;
             }
         }
+
+        //public async Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()
+        //{
+        //    try
+        //    {
+        //        return (await _context.ProjectPriorities).ToList();
+        //    }
+        //    catch (Exception)
+        //    {
+
+        //        throw;
+        //    }
+        //}
     }
 }

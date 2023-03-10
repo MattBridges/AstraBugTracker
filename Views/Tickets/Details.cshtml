@@ -1,11 +1,14 @@
 ﻿@model AstraBugTracker.Models.Ticket
 @using AstraBugTracker.Services
 @using AstraBugTracker.Services.Interfaces;
+@using Microsoft.AspNetCore.Identity;
 @inject IBTFileService BTFileService;
 @inject IBTTicketService BTTicketService;
+@inject UserManager<BTUser> _userManager;
 
 @{
     ViewData["Title"] = "Create";
+    BTUser? assignedDev = await BTTicketService.GetCurrentDeveloperAsync(Model.Id);
 }
 
 <h1>Ticket Details</h1>
@@ -39,6 +42,9 @@
                     <div class="card col m-1 p-2">
                         <div class="card-body">
                             <ul class="list-unstyled">
+                       
+                                <li><strong>Assigned To:</strong> <span class="">@assignedDev.FullName</span></li>
+                                
                                 @*Ticket date*@
                                 <li><strong>Date Entered:</strong> <span class="">  @Model.Created</</span></li>
                                 @*Project end date*@
@@ -50,6 +56,7 @@
                                 @*Ticket status*@
                                 <li><strong>Status:</strong> <span class=""> @Model.TicketStatus</span></li>
                             </ul>
+                            <a class="btn btn-primary" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id">Assign New Developer</a>
                         </div>
                     </div>
                 </div>
@@ -67,13 +74,13 @@
                                     <input name="Comment" type="text" class="w-50" placeholder="Enter a new comment" />
                                     <input type="submit" class="btn btn-primary" value="Enter Comment" />
                                 </form>
-                                
+
                                 @*Form and Logic for authorized users to add comments*@
                                 <hr />
                                 <h6>Comments</h6>
                                 <ul class="right_chat list-unstyled mb-0">
                                     @*Loop to show comments made for the Ticket*@
-                                    @foreach(TicketComment comment in ViewBag.Comments)
+                                    @foreach (TicketComment comment in ViewBag.Comments)
                                     {
                                         <p>@comment.Comment</p>
                                     }

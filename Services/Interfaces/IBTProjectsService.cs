@@ -1,15 +1,15 @@
 ﻿using AstraBugTracker.Models;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 
 namespace AstraBugTracker.Services.Interfaces
 {
     public interface IBTProjectsService
     {
         public Task AddProjectAsync(Project project);
-        //public Task<IEnumerable<Project>> GetProjectsAsync();
-        //public Task GetProjectsAsync(BTUser user);
-        //public Task GetProjectsAsync(Company company);
-        //public Task UpdateProjectAsync(Project project);
-        //public Task DeleteProjectAsync(Project project);
+        public Task<IEnumerable<Project>> GetActiveProjectsAsync(int? companyId);
+       
+        public Task DeleteProjectAsync(Project project);
 
         public Task AddMembersToProjectAsync(IEnumerable<string> userId, int? projectId, int? companyId);
         public Task RemoveMembersFromProjectAsync(int?projectId, int? companyId);
@@ -22,5 +22,9 @@ namespace AstraBugTracker.Services.Interfaces
 
         public Task RemoveProjectManagerAsync(int? projectId);
         public Task<bool> RemoveMemberFromProjectAsync(BTUser? member, int? projectId);
+
+
+        /*public Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()*/
+    
     }
 }
