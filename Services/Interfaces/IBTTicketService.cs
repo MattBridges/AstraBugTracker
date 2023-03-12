@@ -16,7 +16,22 @@ namespace AstraBugTracker.Services.Interfaces
 
         public Task<Ticket> GetTicketAsNoTrackingAsync(int? ticketId, int? companyId);
 
-        //public Task<IEnumerable<Ticket>> GetUnassignedTickets(int? companyId);
+        public Task<IEnumerable<Ticket>> GetIncompleteTicketsAsync(int? companyId);
+
+        public Task<Ticket> GetTicketAsync(int? id);
+
+        public Task AddTicketAsync(Ticket ticket);
+
+        public Task UpdateTicketAsync(Ticket ticket);
+
+        public Task<IEnumerable<TicketPriority>> GetTicketPrioritiesAsync();
+
+        public Task<IEnumerable<TicketStatus>> GetTicketStatusesAsync();
+
+        public Task<IEnumerable<TicketType>> GetTicketTypesAsync();
+
+
+
 
 
     }
