@@ -4,6 +4,7 @@ using Microsoft.Extensions.Options;
 using MimeKit;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+
 namespace AstraBugTracker.Services
 {
     public class BTEmailService:IEmailSender

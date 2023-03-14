@@ -16,6 +16,7 @@ using AstraBugTracker.Extensions;
 using AstraBugTracker.Models.Enums;
 using AstraBugTracker.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.Design;
 
 namespace AstraBugTracker.Controllers
 {
@@ -29,15 +30,19 @@ namespace AstraBugTracker.Controllers
         private readonly IBTRolesService _rolesService;
         private readonly IBTTicketHistoryService _historyService;
         private readonly IBTTicketCommentService _ticketCommentService;
+        private readonly ApplicationDbContext _context;
+        private readonly IBTNotificationService _notificationService;
 
 
-		public TicketsController(UserManager<BTUser> userManager,
+
+        public TicketsController(UserManager<BTUser> userManager,
                                  IBTFileService fileService,
                                  IBTTicketService ticketService,
                                  IBTProjectsService projectsService,
                                  IBTRolesService rolesService,
                                  IBTTicketHistoryService historyService,
-                                 IBTTicketCommentService ticketCommentService)
+                                 IBTTicketCommentService ticketCommentService,
+                                 ApplicationDbContext context,IBTNotificationService notificationService)
         {
             _userManager = userManager;
             _fileService = fileService;
@@ -46,6 +51,8 @@ namespace AstraBugTracker.Controllers
             _rolesService = rolesService;
             _historyService = historyService;
             _ticketCommentService = ticketCommentService;
+            _context = context;
+            _notificationService = notificationService;
         }
 
         [HttpGet]
@@ -92,6 +99,26 @@ namespace AstraBugTracker.Controllers
 
                 Ticket? newTicket = await _ticketService.GetTicketAsNoTrackingAsync(viewModel.Ticket!.Id, companyId);
                 await _historyService.AddHistoryAsync(oldTicket,newTicket,userId!);
+
+                //BTUser? projectManager = await _projectsService.GetProjectManagerAsync(viewModel.Ticket.ProjectId);
+                BTUser? btUser = await _userManager.FindByIdAsync(userId!);
+
+                await _historyService.AddHistoryAsync(null!, newTicket!, userId!);
+                
+                Notification? notification = new()
+                {
+                    TicketId = viewModel.Ticket.Id,
+                    Title = "New Ticket Added",
+                    Message = $"Ticket : {viewModel.Ticket.Title} was assigned by {btUser?.FullName}",
+                    Created = DataUtility.GetPostGresDate(DateTime.Now),
+                    SenderId = userId,
+                    RecipientId = viewModel.DeveloperId,
+                    NotificationTypeId = (await _context.NotificationTypes.FirstOrDefaultAsync(n => n.Name == nameof(BTNotificationTypes.Ticket)))!.Id
+                };
+
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationAsync(notification, "New Developer Assigned");
+
                 return RedirectToAction("Details", new { id = viewModel.Ticket?.Id });
             }
             //If Null reset the view to get it corrected
@@ -212,6 +239,8 @@ namespace AstraBugTracker.Controllers
         {
             ModelState.Remove("SubmitterUserId");
             string? userId = _userManager.GetUserId(User);
+            
+            
 
             if (ModelState.IsValid)
             {
@@ -225,9 +254,32 @@ namespace AstraBugTracker.Controllers
                 int companyId = User.Identity!.GetCompanyId();
                 Ticket? newTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticket.Id, companyId);
 
-                await _historyService.AddHistoryAsync(null!, newTicket!, userId!);
-                //TODO: Notification
+                BTUser? projectManager = await _projectsService.GetProjectManagerAsync(ticket.ProjectId);
+                BTUser? btUser = await _userManager.FindByIdAsync(userId!);
 
+                await _historyService.AddHistoryAsync(null!, newTicket!, userId!);
+                
+                Notification? notification = new()
+                {
+                    TicketId = ticket.Id,
+                    Title = "New Ticket Added",
+                    Message = $"New Ticket : {ticket.Title} was created by {btUser}",
+                    Created = DataUtility.GetPostGresDate(DateTime.Now),
+                    SenderId = userId,
+                    RecipientId = projectManager?.Id,
+                    NotificationTypeId = (await _context.NotificationTypes.FirstOrDefaultAsync(n=>n.Name == nameof(BTNotificationTypes.Ticket)))!.Id
+                };
+
+                if (projectManager != null)
+                {
+                    await _notificationService.AddNotificationAsync(notification);
+                    await _notificationService.SendEmailNotificationAsync(notification, "New Ticket Added");
+                }
+                else
+                {
+                    await _notificationService.AdminNotificationAsync(notification, companyId);
+                    await _notificationService.SendAdminNotificationAsync(notification, "New Project Ticket Added", companyId);
+                }
 
                 
                 return RedirectToAction(nameof(Index));

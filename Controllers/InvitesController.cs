@@ -7,16 +7,43 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using AstraBugTracker.Data;
 using AstraBugTracker.Models;
+using AstraBugTracker.Extensions;
+using AstraBugTracker.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.DataProtection;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity.UI.Services;
 
 namespace AstraBugTracker.Controllers
 {
     public class InvitesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTInviteService _inviteService;
+        private readonly IBTCompanyService _companyService;
+        private readonly IEmailSender _emailService;
+        private readonly IBTProjectsService _projectsService;
+        private readonly UserManager<BTUser> _userManager;
+        private readonly IDataProtector _protector;
+        private readonly IConfiguration _configuration;
 
-        public InvitesController(ApplicationDbContext context)
+        public InvitesController(ApplicationDbContext context,
+                                 IBTInviteService inviteService,
+                                 IBTProjectsService projectsService,
+                                 IBTCompanyService companyService,
+                                 IEmailSender emailService,
+                                 UserManager<BTUser> userManager,
+                                 IDataProtectionProvider dataProtectionProvider,
+                                 IConfiguration configuration)
         {
             _context = context;
+            _inviteService = inviteService;
+            _projectsService = projectsService;
+            _companyService = companyService;
+            _emailService = emailService;
+            _userManager = userManager;
+            _configuration = configuration;
+            _protector = dataProtectionProvider.CreateProtector(_configuration.GetValue<string>("ProtectKey") ?? Environment.GetEnvironmentVariable("ProtectKey")!);
         }
 
         // GET: Invites
@@ -49,12 +76,11 @@ namespace AstraBugTracker.Controllers
         }
 
         // GET: Invites/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description");
+            int companyId = User.Identity!.GetCompanyId();
+
+            ViewData["ProjectId"] = new SelectList(await _projectsService.GetActiveProjectsAsync(companyId), "Id", "Description");
             return View();
         }
 
@@ -63,124 +89,91 @@ namespace AstraBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,InviteDate,JoinDate,CompanyToken,InviteeEmail,InviteeFirstName,InviteeLastName,Message,IsValid,CompanyId,ProjectId,InvitorId,InviteeId")] Invite invite)
+        public async Task<IActionResult> Create([Bind("Id,InviteeEmail,InviteeFirstName,InviteeLastName,Message,ProjectId")] Invite invite)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(invite);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", invite.CompanyId);
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id", invite.InviteeId);
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id", invite.InvitorId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description", invite.ProjectId);
-            return View(invite);
-        }
-
-        // GET: Invites/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Invite == null)
-            {
-                return NotFound();
-            }
-
-            var invite = await _context.Invite.FindAsync(id);
-            if (invite == null)
-            {
-                return NotFound();
-            }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", invite.CompanyId);
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id", invite.InviteeId);
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id", invite.InvitorId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description", invite.ProjectId);
-            return View(invite);
-        }
-
-        // POST: Invites/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,InviteDate,JoinDate,CompanyToken,InviteeEmail,InviteeFirstName,InviteeLastName,Message,IsValid,CompanyId,ProjectId,InvitorId,InviteeId")] Invite invite)
-        {
-            if (id != invite.Id)
-            {
-                return NotFound();
-            }
+            int companyId = User.Identity!.GetCompanyId();
+            ModelState.Remove("InvitorId");
 
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _context.Update(invite);
-                    await _context.SaveChangesAsync();
+                    Guid guid = Guid.NewGuid();
+                    string? token = _protector.Protect(guid.ToString());
+                    string? email = _protector.Protect(invite.InviteeEmail!);
+                    string? company = _protector.Protect(companyId.ToString());
+
+                    string? callbackUrl = Url.Action("ProcessInvite", "Invites", new { token, email, company }, protocol: Request.Scheme);
+
+                    string body = $@"{invite.Message} <br />
+                       Please join my Company. <br />
+                       Click the following link to join our team. <br />
+                       <a href=""{callbackUrl}"">COLLABORATE</a>";
+
+                    string? destination = invite.InviteeEmail;
+
+                    Company btCompany = await _companyService.GetCompanyInfoAsync(companyId);
+
+                    string? subject = $"AstraTracker: {btCompany.Name}";
+
+                    await _emailService.SendEmailAsync(destination!, subject, body);
+
+                    //Save invite in database
+                    invite.CompanyToken = guid;
+                    invite.CompanyId = companyId;
+                    invite.InviteDate = DataUtility.GetPostGresDate(DateTime.Now);
+                    invite.InvitorId = _userManager.GetUserId(User);
+                    invite.IsValid = true;
+
+                    await _inviteService.AddNewInviteAsync(invite);
+
+                    return RedirectToAction("Index", "Home");
+
+                    //Todo: Invite Sweet Alert
                 }
-                catch (DbUpdateConcurrencyException)
+                catch (Exception)
                 {
-                    if (!InviteExists(invite.Id))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
+                    throw;
                 }
-                return RedirectToAction(nameof(Index));
+
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", invite.CompanyId);
-            ViewData["InviteeId"] = new SelectList(_context.Users, "Id", "Id", invite.InviteeId);
-            ViewData["InvitorId"] = new SelectList(_context.Users, "Id", "Id", invite.InvitorId);
-            ViewData["ProjectId"] = new SelectList(_context.Projects, "Id", "Description", invite.ProjectId);
+
+
+
+            ViewData["ProjectId"] = new SelectList(await _projectsService.GetActiveProjectsAsync(companyId), "Id", "Description");
             return View(invite);
         }
 
-        // GET: Invites/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        [HttpGet]
+        [AllowAnonymous]
+        public async Task<IActionResult> ProcessInvite(string token, string email, string company)
         {
-            if (id == null || _context.Invite == null)
+            if (string.IsNullOrEmpty(token) || string.IsNullOrEmpty(email) || string.IsNullOrEmpty(company))
             {
                 return NotFound();
             }
 
-            var invite = await _context.Invite
-                .Include(i => i.Company)
-                .Include(i => i.Invitee)
-                .Include(i => i.Invitor)
-                .Include(i => i.Project)
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (invite == null)
+            Guid companyToken = Guid.Parse(_protector.Unprotect(token));
+            string inviteeEmail = _protector.Unprotect(email);
+            int companyId = int.Parse(_protector.Unprotect(company));
+
+            try
             {
+                Invite? invite = await _inviteService.GetInviteAsync(companyToken, inviteeEmail, companyId);
+                if (invite != null)
+                {
+                    return View(invite);
+                }
+
                 return NotFound();
+
             }
-
-            return View(invite);
-        }
-
-        // POST: Invites/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Invite == null)
+            catch (Exception)
             {
-                return Problem("Entity set 'ApplicationDbContext.Invite'  is null.");
-            }
-            var invite = await _context.Invite.FindAsync(id);
-            if (invite != null)
-            {
-                _context.Invite.Remove(invite);
-            }
-            
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
 
-        private bool InviteExists(int id)
-        {
-          return (_context.Invite?.Any(e => e.Id == id)).GetValueOrDefault();
+                throw;
+            }
+
         }
     }
 }
