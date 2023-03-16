@@ -22,6 +22,10 @@
     <link href="~/layouts/modern-dark-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
     <script src="~/layouts/modern-dark-menu/loader.js"></script>
     
+
+    
+
+
     <link href="~/src/assets/css/light/elements/popover.css" rel="stylesheet" type="text/css">
     <link href="~/src/assets/css/dark/elements/popover.css" rel="stylesheet" type="text/css">
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
@@ -38,27 +42,28 @@
     <link href="~/src/plugins/src/flatpickr/flatpickr.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="~/src/plugins/src/filepond/filepond.min.css">
     <link rel="stylesheet" href="~/src/plugins/src/filepond/FilePondPluginImagePreview.min.css">
-
     <link href="~/src/plugins/css/light/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
     <link href="~/src/plugins/css/light/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
     <link href="~/src/assets/css/light/apps/invoice-add.css" rel="stylesheet" type="text/css" />
-
     <link href="~/src/plugins/css/dark/filepond/custom-filepond.css" rel="stylesheet" type="text/css" />
     <link href="~/src/plugins/css/dark/flatpickr/custom-flatpickr.css" rel="stylesheet" type="text/css">
     <link href="~/src/assets/css/dark/apps/invoice-add.css" rel="stylesheet" type="text/css" />
-
-    
-
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/src/table/datatable/datatables.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/light/table/datatable/dt-global_style.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/light/table/datatable/custom_dt_custom.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/dark/table/datatable/dt-global_style.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/dark/table/datatable/custom_dt_custom.css">
     <link href="~/src/assets/css/light/components/list-group.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="~/src/assets/css/light/widgets/modules-widgets.css">    
+    <link rel="stylesheet" type="text/css" href="~/src/assets/css/light/widgets/modules-widgets.css">
 
     <link href="~/src/assets/css/dark/components/list-group.css" rel="stylesheet" type="text/css">
-    <link rel="stylesheet" type="text/css" href="~/src/assets/css/dark/widgets/modules-widgets.css">   
-
+    <link rel="stylesheet" type="text/css" href="~/src/assets/css/dark/widgets/modules-widgets.css">
+    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
 </head>
 <body class="layout-boxed">
+    <partial name="_LogoutPartial" />
     <!-- BEGIN LOADER -->
     <div id="load_screen">
         <div class="loader">
@@ -72,35 +77,12 @@
     <div class="header-container container-xxl">
         <header class="header navbar navbar-expand-sm expand-header">
 
-            <a href="javascript:void(0);" class="sidebarCollapse">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-menu"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
-            </a>
+        
 
-            <div class="search-animated toggle-search">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-                    <form class="form-inline search-full form-inline search" role="search">
-                <div class="search-bar">
-                <input type="text" class="form-control search-form-control  ml-lg-auto" placeholder="Search~.">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x search-close"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-                </div>
-                </form>
-                <span class="badge badge-secondary">Ctrl + /</span>
-            </div>
+
 
             <ul class="navbar-item flex-row ms-lg-auto ms-0">
 
-                <li class="nav-item dropdown language-dropdown">
-                    <a href="javascript:void(0);" class="nav-link dropdown-toggle" id="language-dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <img src="~/src/assets/img/1x1/us.svg" class="flag-width" alt="flag">
-                    </a>
-                    <div class="dropdown-menu position-absolute" aria-labelledby="language-dropdown">
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/us.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;English</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/tr.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Turkish</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/br.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Portuguese</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/in.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;Hindi</span></a>
-                        <a class="dropdown-item d-flex" href="javascript:void(0);"><img src="~/src/assets/img/1x1/de.svg" class="flag-width" alt="flag"> <span class="align-self-center">&nbsp;German</span></a>
-                    </div>
-                </li>
 
                 <li class="nav-item theme-toggle-item">
                     <a href="javascript:void(0);" class="nav-link theme-toggle">
@@ -249,24 +231,11 @@
                                 </div>
                             </div>
                             <div class="dropdown-item">
-                                <a href="user-profile.html">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-user"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg> <span>Profile</span>
-                                </a>
+                                <a href="user-profile.html"><i data-feather="user"></i><span>Profile</span></a>
                             </div>
-                            @*         <div class="dropdown-item">
-                        <a href="app-mailbox.html">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-inbox"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"></polyline><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"></path></svg> <span>Inbox</span>
-                        </a>
-                        </div>
-                        <div class="dropdown-item">
-                        <a href="auth-boxed-lockscreen.html">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-lock"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg> <span>Lock Screen</span>
-                        </a>
-                        </div>*@
+                       
                             <div class="dropdown-item">
-                                <a asp-area="Identity" asp-page="/Account/Logout">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-log-out"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg> <span>Log Out</span>
-                                </a>
+                                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();"><i class="feather feather-user" data-feather="log-out"></i><span>Logout</span></a>
                             </div>
                         </div>
                     </li>
@@ -301,17 +270,13 @@
 
             <nav id="sidebar">
 
-                <div class="navbar-nav theme-brand flex-row  text-center">
+                <div class="navbar-nav theme-brand flex-row text-center">
                     <div class="nav-item theme-logo">
                         <a asp-action="Index" asp-controller="Home" class="nav-link">
                             <img src="~/img/in-tracker-high-resolution-logo-color-on-transparent-background.png" style="height:30px; width:100%;" alt="logo">
                         </a>
                     </div>
-                    <div class="nav-item sidebar-toggle">
-                        <div class="btn-toggle sidebarCollapse">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevrons-left"><polyline points="11 17 6 12 11 7"></polyline><polyline points="18 17 13 12 18 7"></polyline></svg>
-                        </div>
-                    </div>
+   
                 </div>
                 @if (User.Identity!.IsAuthenticated)
                 {
@@ -322,58 +287,30 @@
                             </div>
                             <div class="profile-content">
                                 <h6 class="">@loggedInUser.FullName</h6>
-                                <!--TODO Fix Role Here-->
-                                <p class="">Admin</p>
                             </div>
                         </div>
                     </div>
 
-                    @*<div class="shadow-bottom"></div>*@
                 }
                 <div class="shadow-bottom"></div>
 
                 <ul class="list-unstyled menu-categories" id="accordionExample">
 
-
-
-
-
-
-
-
-
-
-                    @*                   <li class="menu active">
-                    <a href="#dashboard" data-bs-toggle="collapse" aria-expanded="true" class="dropdown-toggle">
-                    <div class="">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-home"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                    <span>Dashboard</span>
-                    </div>
-                    <div>
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                    </div>
-                    </a>
-                    <ul class="collapse submenu list-unstyled show" id="dashboard" data-bs-parent="#accordionExample">
-                    <li class="active">
-                    <a href="./index.html"> Analytics </a>
-                    </li>
-                    <li>
-                    <a href="./index2.html"> Sales </a>
-                    </li>
-                    </ul>
-                    </li>*@
                     @if (User.Identity!.IsAuthenticated)
                     {
-                        <li class="menu menu-heading">
-                            <div class="heading"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-minus"><line x1="5" y1="12" x2="19" y2="12"></line></svg><span>Menu Items</span></div>
+                        <li class="menu">
+                            <a asp-action="Index" asp-controller="Home" class="dropdown-toggle">
+                                <div class="">
+                                    <span><i data-feather="home"></i>Dashboard</span>
+                                </div>                              
+                            </a>
                         </li>
-
                         <!--Projects Menu-->
                         <li class="menu">
                             <a href="#projects" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                 <div class="">
                                     @*<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>*@
-                                    <span>Projects</span>
+                                    <span><i data-feather="folder"></i>Projects</span>
                                 </div>
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -381,20 +318,20 @@
                             </a>
                             <ul class="collapse submenu list-unstyled" id="projects" data-bs-parent="#accordionExample">
                                 <li>
-                                    <a asp-action="Index" asp-controller="Projects">Project List </a>
+                                    <a asp-action="Index" asp-controller="Projects">All Projects</a>
                                 </li>
+
                                 <li>
-                                    <a asp-action="Create" asp-controller="Projects"> Create Project </a>
+                                    <a asp-action="ViewMyProjects" asp-controller="Projects"> My Projects </a>
                                 </li>
                             </ul>
                         </li>
-
                         <!--Tickets Menu-->
                         <li class="menu">
                             <a href="#tickets" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
                                 <div class="">
                                     @*<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>*@
-                                    <span>Tickets</span>
+                                    <span><i data-feather="file-plus"></i>Tickets</span>
                                 </div>
                                 <div>
                                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
@@ -407,26 +344,52 @@
                                 <li>
                                     <a asp-action="Create" asp-controller="Tickets"> Create Ticket </a>
                                 </li>
+                                <li>
+                                    <a asp-action="MyTickets" asp-controller="Tickets">My Tickets</a>
+                                </li>
+                                @if (User.IsInRole(nameof(BTRoles.Admin)) || User.IsInRole(nameof(BTRoles.ProjectManager)))
+                                {
+                                    <li>
+                                        <a asp-action="UnassignedTickets" asp-controller="Tickets">All Unassigned Tickets</a>
+                                    </li>
+                                }
                             </ul>
                         </li>
                         <!--Company Menu-->
-                        <li class="menu">
-                            <a href="#company" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
-                                <div class="">
-                                    @*<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>*@
-                                    <span>Company</span>
-                                </div>
-                                <div>
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
-                                </div>
-                            </a>
-                            <ul class="collapse submenu list-unstyled" id="company" data-bs-parent="#accordionExample">
-                                <li>
-                                    <a asp-action="ManageUserRoles" asp-controller="Companies">Manage User Roles </a>
-                                </li>
-                              
-                            </ul>
-                        </li>
+                        @if (User.IsInRole(nameof(BTRoles.Admin)))
+                        {
+                            <li class="menu">
+                                <a href="#company" data-bs-toggle="collapse" aria-expanded="false" class="dropdown-toggle">
+                                    <div class="">
+                                        @*<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-dollar-sign"><line x1="12" y1="1" x2="12" y2="23"></line><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>*@
+                                        <span><i data-feather="users"></i>Company</span>
+                                    </div>
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-right"><polyline points="9 18 15 12 9 6"></polyline></svg>
+                                    </div>
+                                </a>
+                                <ul class="collapse submenu list-unstyled" id="company" data-bs-parent="#accordionExample">
+                                    <li>
+                                        <a asp-action="Create" asp-controller="Projects"> Create Project </a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="Edit" asp-controller="Companies"> Update Company </a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="ViewUsers" asp-controller="Companies">View All Users </a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="Create" asp-controller="Invites">Invite User </a>
+                                    </li>
+                                    <li>
+                                        <a asp-action="ManageUserRoles" asp-controller="Companies">Manage User Roles </a>
+                                    </li>
+
+
+                                </ul>
+                            </li>
+                        }
+
                     }
 
                 </ul>
@@ -436,7 +399,12 @@
         </div>
         <!--  END SIDEBAR  -->
         <div id="content" class="main-content">
+
+            <div class="layout-px-spacing">
+                <div class="middle-content container-xxl p-0">
             @RenderBody()
+            </div>
+            </div>
             <!--  BEGIN FOOTER  -->
             <div class="footer-wrapper  ">
                 <div class="footer-section mx-auto">
@@ -456,13 +424,14 @@
         feather.replace()
     </script>
     <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-    
+    <script src="~/src/plugins/src/global/vendors.min.js"></script>
     <script src="~/src/bootstrap/js/bootstrap.bundle.min.js"></script>
     <script src="~/src/assets/js/elements/popovers.js"></script>
     <script src="~/src/plugins/src/perfect-scrollbar/perfect-scrollbar.min.js"></script>
     <script src="~/src/plugins/src/mousetrap/mousetrap.min.js"></script>
     <script src="~/src/plugins/src/waves/waves.min.js"></script>
     <script src="~/layouts/modern-dark-menu/app.js"></script>
+    <script src="~/src/assets/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
     <script src="~/src/plugins/src/apex/apexcharts.min.js"></script>
@@ -477,10 +446,13 @@
     <script src="~/src/plugins/src/filepond/filepondPluginFileValidateSize.min.js"></script>
     <script src="~/src/plugins/src/flatpickr/flatpickr.js"></script>
     <script src="~/src/assets/js/apps/invoice-add.js"></script>
+    <script src="~/src/plugins/src/table/datatable/datatables.js"></script>
+    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
     
+
     <script src="~/src/assets/js/widgets/modules-widgets.js"></script>
-    
-   
+
+
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

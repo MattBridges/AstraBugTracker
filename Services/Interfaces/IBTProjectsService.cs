@@ -8,6 +8,7 @@ namespace AstraBugTracker.Services.Interfaces
     {
         public Task AddProjectAsync(Project project);
         public Task<IEnumerable<Project>> GetActiveProjectsAsync(int? companyId);
+        public Task<IEnumerable<Project>> GetActiveProjectsAsync(int? companyId, string? userId);
        
         public Task DeleteProjectAsync(Project project);
 
@@ -25,6 +26,6 @@ namespace AstraBugTracker.Services.Interfaces
 
 
         /*public Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()*/
-    
+
     }
 }

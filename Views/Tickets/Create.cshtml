@@ -4,10 +4,7 @@
     ViewData["Title"] = "Create";
 }
 
-<head>
-    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/dark/editors/quill/quill.snow.css">
-    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/light/editors/quill/quill.snow.css">
-</head>
+
 
 
 <h1 class="text-center pt-3">Create Ticket</h1>
@@ -15,7 +12,7 @@
     <div class="middle-content container-xxl">
                <form asp-action="Create" onsubmit="GetQuillInput()">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" id="quillEditor" asp-for="@Model.Description"/>
+           
         <div class="row layout-spacing layout-top-spacing">
             @*Main Area*@
             <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
@@ -28,18 +25,15 @@
                             <span asp-validation-for="Title" class="text-danger"></span>
                         </div>
                     </div>
-                    @*Ticket Details*@
+                    @*Ticket description*@
                     <div class="row">
                         <div class="col-sm-12">
                             <div id="basic" class="row layout-spacing">
                                 <div class="col-lg-12">
                                     <div class="statbox widget box box-shadow form-control g-0">
                                         <div class="widget-content widget-content-area">
-                                             <div id="editor-container" class="ql-container ql-snow " style="height:25vh;margin-top:-1px !important;">
-                                                 <div asp-for="Description" class="ql-editor" data-gramm="false" contenteditable="true" data-placeholder="Ticket details"></div>
-                                                 <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
-                                                 <div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>
-                                             </div>
+                                          <textarea asp-for="Description" class="form-control description mt-1 " placeholder="Project Description" style="height:525px;"></textarea>
+                                          <span asp-validation-for="Description" class="text-danger"></span>
                                         </div>
                                     </div>
                                 </div>
@@ -101,20 +95,3 @@
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-<script>
-
-    var quill = new Quill('#editor-container', {
-        modules: {
-            toolbar: [
-                [{ header: [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
-            ]
-        },
-        placeholder: 'Enter Ticket Details',
-        theme: 'snow'  // or 'bubble'
-    });
-    function GetQuillInput(){
-        document.getElementById('quillEditor').value = quill.root.innerHTML;
-    }
-</script>

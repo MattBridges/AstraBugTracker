@@ -1,5 +1,6 @@
 ﻿using AstraBugTracker.Data;
 using AstraBugTracker.Models;
+using AstraBugTracker.Models.Enums;
 using AstraBugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
@@ -13,11 +14,13 @@ namespace AstraBugTracker.Services
     {
         private readonly ApplicationDbContext _context;
         private readonly UserManager<BTUser> _userManager;
+        private readonly IBTRolesService _rolesService;
 
-        public BTTicketService(ApplicationDbContext context, UserManager<BTUser> userManager)
+        public BTTicketService(ApplicationDbContext context, UserManager<BTUser> userManager,IBTRolesService rolesService)
         {
             _context = context;
             _userManager = userManager;
+            _rolesService = rolesService;
         }
 
         public async Task AddTicketAttachmentAsync(TicketAttachment ticketAttachment)
@@ -153,6 +156,48 @@ namespace AstraBugTracker.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<Ticket>> GetIncompleteTicketsAsync(string? userId)
+        {
+            try
+            {
+                return await _context.Tickets.Where(t => t.DeveloperUserId == userId && t.Archived == false).ToListAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<Ticket>> GetUnassignedTicketsAsync(BTUser? user)
+        {
+            try
+            {
+                List<Ticket> tickets = new List<Ticket>();
+               
+                //Get all unassigned tickets for the admin in the company
+                if (await _rolesService.IsUserInRoleAsync(user!, nameof(BTRoles.Admin)))
+                {
+                   tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && t.Archived == false && t.DeveloperUser == null).ToListAsync();
+                }
+                //Get unassigned tickets PM is in charge of
+                if (await _rolesService.IsUserInRoleAsync(user!, nameof(BTRoles.ProjectManager)))
+                {
+                    tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && 
+                                                                t.Archived == false && 
+                                                                t.DeveloperUser == null && 
+                                                                user!.Projects!.Contains(t.Project))
+                                                    .ToListAsync();
+                }
+                return tickets;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }        
 
         public async Task<Ticket> GetTicketAsync(int? id)
         {

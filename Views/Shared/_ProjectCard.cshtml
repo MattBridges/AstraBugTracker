@@ -1,0 +1,80 @@
+﻿@model AstraBugTracker.Models.Project
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="col-3 mx-1 mb-2">
+
+    <div class="card style-4">
+        <div class="card-body pt-3">
+
+            <div class="m-o-dropdown-list">
+                <div class="media mt-0 mb-3">
+                    <div class="badge--group me-3">
+                        <div class="badge badge-success badge-dot"></div>
+                    </div>
+                    <div class="media-body">
+                        <h4 class="media-heading mb-0">
+                            <span class="media-title">@Model.Name</span>
+                            <div class="dropdown-list dropdown" role="group">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                </a>
+                                <div class="dropdown-menu left">
+                                    @if (@User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="AssignPM" asp-route-id="@Model.Id" class="dropdown-item" ><i data-feather="user-plus"></i><span>Assign Project Manager</span> </a>
+                                    }
+                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="dropdown-item" ><i data-feather="edit-3"></i><span>Edit Project</span></a>
+                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="delete"></i><span>Archive Project</span></a>
+                                </div>
+                            </div>
+                        </h4>
+                    </div>
+                </div>
+
+            </div>
+
+            <p class="card-text mt-4 mb-0">@Model.Description</p>
+            <div class="text-center mt-3">
+                <a asp-action="Details" asp-route-id="@Model.Id" class="btn btn-primary">View Details</a>
+            </div>
+        </div>
+        <div class="card-footer pt-0 border-0">
+            <div class="progress br-30 progress-sm">
+                <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>
+
+            <div class="d-flex justify-content-between">
+
+                <div class="avatar--group">
+                    <div class="avatar avatar-sm ms-0">
+                        <img alt="avatar" src="../src/assets/img/profile-16.jpeg" class="rounded-circle" />
+                    </div>
+                    <div class="avatar avatar-sm">
+                        <img alt="avatar" src="../src/assets/img/delete-user-4.jpeg" class="rounded-circle" />
+                    </div>
+                    <div class="avatar avatar-sm">
+                        <img alt="avatar" src="../src/assets/img/profile-5.jpeg" class="rounded-circle" />
+                    </div>
+                    <div class="avatar avatar-sm">
+                        <img alt="avatar" src="../src/assets/img/profile-12.jpeg" class="rounded-circle" />
+                    </div>
+                </div>
+
+                <div class="attachments align-self-center">
+                    <span class="image me-1">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-paperclip"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
+                    </span>
+                    <span class="count">4</span>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+

@@ -1,12 +1,10 @@
 ﻿@model IEnumerable<AstraBugTracker.Models.Ticket>
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
-@using X.PagedList.Web.Common;
 
 @{
     ViewData["Title"] = "Index";
 }
 
+<h1>Unassigned</h1>
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -40,10 +38,10 @@
                 <tr>
                     <th class="no-content"></th>
                     <th class="text-center"> @Html.DisplayNameFor(model => model.Title) </th>
-                    <th >Assigned To</th>
+                    <th>Assigned To</th>
                     <th>@Html.DisplayNameFor(model => model.Created)</th>
-                    <th >@Html.DisplayNameFor(model => model.TicketType)</th>
-                    <th >@Html.DisplayNameFor(model => model.TicketPriority)</th>
+                    <th>@Html.DisplayNameFor(model => model.TicketType)</th>
+                    <th>@Html.DisplayNameFor(model => model.TicketPriority)</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,14 +49,14 @@
                 {
                     <tr>
                         <td class="text-center">  <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a></td>
-                        <td class="text-center" > @Html.DisplayFor(modelItem => item.Title)</td>
-                        <td >
+                        <td class="text-center"> @Html.DisplayFor(modelItem => item.Title)</td>
+                        <td>
                             <span><img src="../src/assets/img/profile-17.jpeg" class="profile-img" alt="avatar"></span>
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Created)</td>
                         <td><span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketType!.Id)</span></td>
                         <td><span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketPriority!.Id)</span></td>
-       
+
                     </tr>
                 }
             </tbody>

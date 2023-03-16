@@ -59,6 +59,8 @@ namespace AstraBugTracker.Services
             }
         }
 
+        
+
         public async Task DeleteProjectAsync(Project project)
         {
             try
@@ -266,6 +268,11 @@ namespace AstraBugTracker.Services
 
                 throw;
             }
+        }
+
+        public Task<IEnumerable<Project>> GetActiveProjectsAsync(int? companyId, string? userId)
+        {
+            throw new NotImplementedException();
         }
 
         //public async Task<IEnumerable<ProjectPriority>> GetProjectPrioritiesAsync()

@@ -20,6 +20,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Components.Routing;
+using AstraBugTracker.Data;
+using AstraBugTracker.Models.Enums;
 
 namespace AstraBugTracker.Areas.Identity.Pages.Account
 {
@@ -31,13 +33,15 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account
         private readonly IUserEmailStore<BTUser> _emailStore;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IEmailSender _emailSender;
+        private readonly ApplicationDbContext _context;
 
         public RegisterModel(
             UserManager<BTUser> userManager,
             IUserStore<BTUser> userStore,
             SignInManager<BTUser> signInManager,
             ILogger<RegisterModel> logger,
-            IEmailSender emailSender)
+            IEmailSender emailSender,
+            ApplicationDbContext context)
         {
             _userManager = userManager;
             _userStore = userStore;
@@ -45,6 +49,7 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _context = context;
         }
 
         /// <summary>
@@ -75,11 +80,18 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account
             [Required]
             [Display(Name = "First Name")]
             [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at most {1} characters", MinimumLength = 2)]
-            public string? FirstName { get; set; }
+            public string FirstName { get; set; }
             [Required]
             [Display(Name = "Last Name")]
             [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at most {1} characters", MinimumLength = 2)]
-            public string? LastName { get; set; }
+            public string LastName { get; set; }
+
+            [Required]
+            [Display(Name = "Company Name")]
+            public string CompanyName { get; set; }
+            [Required]
+            [Display(Name = "Company Description")]
+            public string CompanyDescription { get; set; }
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
@@ -120,10 +132,22 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)
         {
             returnUrl ??= Url.Content("~/");
-            ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+            //ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
-                var user = CreateUser();
+                //Create New Company
+                Company company = new()
+                {
+                    Name = Input.CompanyName,
+                    Description= Input.CompanyDescription
+                };
+
+                await _context.AddAsync(company);
+                await _context.SaveChangesAsync();
+
+                //Create New User
+
+                var user = CreateUser(company.Id);
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
                 await _emailStore.SetEmailAsync(user, Input.Email, CancellationToken.None);
@@ -132,6 +156,9 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User created a new account with password.");
+
+                    //Add User to admin role
+                    await _userManager.AddToRoleAsync(user, nameof(BTRoles.Admin));
 
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
@@ -165,13 +192,14 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account
             return Page();
         }
 
-        private BTUser CreateUser()
+        private BTUser CreateUser(int companyId)
         {
             try
             {
                 BTUser user = Activator.CreateInstance<BTUser>();
                 user.FirstName = Input.FirstName;
                 user.LastName = Input.LastName;
+                user.CompanyId = companyId;
 
                 return user;
             }

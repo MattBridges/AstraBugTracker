@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using AstraBugTracker.Extensions;
 using AstraBugTracker.Models.ViewModels;
 using System.Collections;
+using Microsoft.AspNetCore.Identity;
 
 namespace AstraBugTracker.Controllers
 {
@@ -23,13 +24,15 @@ namespace AstraBugTracker.Controllers
         private readonly IBTFileService _fileService;
         private readonly IBTProjectsService _projectsService;
         private readonly IBTRolesService _rolesService;
+        private readonly UserManager<BTUser> _userManager;
 
-        public ProjectsController(ApplicationDbContext context, IBTFileService fileService, IBTProjectsService projectsService,IBTRolesService rolesService)
+        public ProjectsController(ApplicationDbContext context, IBTFileService fileService, IBTProjectsService projectsService,IBTRolesService rolesService,UserManager<BTUser> userManager)
         {
             _context = context;
             _fileService = fileService;
             _projectsService = projectsService;
             _rolesService = rolesService;
+            _userManager = userManager;
         }
 
         [HttpGet]
@@ -136,14 +139,24 @@ namespace AstraBugTracker.Controllers
             return View(viewModel);
         }
 
-        // GET: Projects
+        // GET: All Projects
         public async Task<IActionResult> Index()
         {
-            //IEnumerable<Project> projects= await _context.Projects.Where(p=>p.Archived == false).ToListAsync();
             int companyId = User.Identity!.GetCompanyId();
             IEnumerable<Project> projects = await _projectsService.GetActiveProjectsAsync(companyId);
 
             return View(projects);
+        }
+
+        // GET: My Projects
+        public async Task<IActionResult> ViewMyProjects()
+        {
+            int companyId = User.Identity!.GetCompanyId();
+            string? userId = _userManager.GetUserId(User);
+            
+            IEnumerable<Project> userProjects = await _projectsService.GetActiveProjectsAsync(companyId, userId);
+
+            return View(userProjects);
         }
 
         // GET: Projects/Details/5
@@ -170,7 +183,6 @@ namespace AstraBugTracker.Controllers
         public IActionResult Create()
         {
             IEnumerable<Company> companies = _context.Companies.ToList();            
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name");
 
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name");
 
@@ -185,9 +197,12 @@ namespace AstraBugTracker.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived,CompanyId")] Project project)
         {
-            
+            ModelState.Remove("CompanyId");
             if (ModelState.IsValid)
             {
+                int companyId = User.Identity!.GetCompanyId();
+
+                project.CompanyId = companyId;
                 //Reformat Dates
                 project.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
                 project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
@@ -203,8 +218,7 @@ namespace AstraBugTracker.Controllers
                 await _projectsService.AddProjectAsync(project);
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+           
             return View(project);
         }
 
@@ -221,8 +235,8 @@ namespace AstraBugTracker.Controllers
             {
                 return NotFound();
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+            
+            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name", project.ProjectPriorityId);
             return View(project);
         }
 
@@ -238,10 +252,14 @@ namespace AstraBugTracker.Controllers
                 return NotFound();
             }
 
+            ModelState.Remove("CompanyId");
             if (ModelState.IsValid)
             {
                 try
                 {
+                    int companyId = User.Identity!.GetCompanyId();
+
+                    project.CompanyId = companyId;
                     //Reformat Dates
                     project.Created = DataUtility.GetPostGresDate(project.Created);
                     project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
@@ -253,8 +271,6 @@ namespace AstraBugTracker.Controllers
                         project.ImageFileData = await _fileService.ConvertFileToByteArrayAsync(project.ImageFormFile);
                         project.ImageFileType = project.ImageFormFile.ContentType;
                     }
-
-
 
                     _context.Update(project);
                     await _context.SaveChangesAsync();
@@ -272,8 +288,7 @@ namespace AstraBugTracker.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CompanyId"] = new SelectList(_context.Companies, "Id", "Name", project.CompanyId);
-            ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Id", project.ProjectPriorityId);
+          
             return View(project);
         }
 

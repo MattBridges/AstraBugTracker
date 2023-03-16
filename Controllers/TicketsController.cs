@@ -17,6 +17,7 @@ using AstraBugTracker.Models.Enums;
 using AstraBugTracker.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.Design;
+using X.PagedList;
 
 namespace AstraBugTracker.Controllers
 {
@@ -133,12 +134,37 @@ namespace AstraBugTracker.Controllers
 
             return View(viewModel);
         }
-        // GET: Tickets
-        public async Task<IActionResult> Index()
+
+        // GET: My Tickets
+        public async Task<IActionResult> MyTickets()
+        {
+            BTUser? user = await _userManager.GetUserAsync(User);
+            IEnumerable<Ticket> tickets = await _ticketService.GetIncompleteTicketsAsync(user!.Id);
+
+
+
+            return View(tickets);
+        }
+        // GET:Unassigned Tickets
+        public async Task<IActionResult> UnassignedTickets()
+        {
+            int companyId = User.Identity!.GetCompanyId();
+            BTUser? user = await _userManager.GetUserAsync(User);
+            IEnumerable<Ticket> tickets = await _ticketService.GetUnassignedTicketsAsync(user);
+
+
+
+            return View(tickets);
+        }
+        // GET All Tickets: Tickets
+        public async Task<IActionResult> Index(int? pageNum)
         {
             int companyId=User.Identity!.GetCompanyId();
             IEnumerable<Ticket> tickets =await _ticketService.GetIncompleteTicketsAsync(companyId);
-                
+            int pageSize = 10;
+            int page = pageNum ?? 1;
+
+            //IPagedList<Ticket> tickets=(await _ticketService.GetIncompleteTicketsAsync(companyId)).ToPagedList(page, pageSize);
                 
             
             return View(tickets);

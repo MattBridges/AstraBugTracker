@@ -31,11 +31,25 @@
                             </div>
                             <div class="col-md-12">
                                 <div class="mb-3">
-                                    <label asp-for="Input.LastName" class="form-label">Last Name</label>
+                                        <label asp-for="Input.LastName" class="form-label">Company Name</label>
                                     <input asp-for="Input.LastName" class="form-control" autocomplete="first-name" aria-required="true" placeholder="Last Name" />
                                     <span asp-validation-for="Input.LastName" class="text-danger"></span>
                                 </div>
                             </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label asp-for="Input.CompanyName" class="form-label">Last Name</label>
+                                        <input asp-for="Input.CompanyName" class="form-control" autocomplete="first-name" aria-required="true" placeholder="Company Name" />
+                                        <span asp-validation-for="Input.CompanyName" class="text-danger"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="mb-3">
+                                        <label asp-for="Input.CompanyDescription" class="form-label">Company Description</label>
+                                        <input asp-for="Input.CompanyDescription" class="form-control" autocomplete="first-name" aria-required="true" placeholder="Company Description" />
+                                        <span asp-validation-for="Input.CompanyDescription" class="text-danger"></span>
+                                    </div>
+                                </div>
                             <div class="col-md-12">
                                 <div class="mb-3">
                                     <label asp-for="Input.Email" class="form-label">Email</label>
