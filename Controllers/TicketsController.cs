@@ -105,7 +105,7 @@ namespace AstraBugTracker.Controllers
                 BTUser? btUser = await _userManager.FindByIdAsync(userId!);
 
                 await _historyService.AddHistoryAsync(null!, newTicket!, userId!);
-                
+
                 Notification? notification = new()
                 {
                     TicketId = viewModel.Ticket.Id,
@@ -114,6 +114,7 @@ namespace AstraBugTracker.Controllers
                     Created = DataUtility.GetPostGresDate(DateTime.Now),
                     SenderId = userId,
                     RecipientId = viewModel.DeveloperId,
+                    ProjectId = viewModel.Ticket!.ProjectId,
                     NotificationTypeId = (await _context.NotificationTypes.FirstOrDefaultAsync(n => n.Name == nameof(BTNotificationTypes.Ticket)))!.Id
                 };
 
@@ -160,12 +161,7 @@ namespace AstraBugTracker.Controllers
         public async Task<IActionResult> Index(int? pageNum)
         {
             int companyId=User.Identity!.GetCompanyId();
-            IEnumerable<Ticket> tickets =await _ticketService.GetIncompleteTicketsAsync(companyId);
-            int pageSize = 10;
-            int page = pageNum ?? 1;
-
-            //IPagedList<Ticket> tickets=(await _ticketService.GetIncompleteTicketsAsync(companyId)).ToPagedList(page, pageSize);
-                
+            IEnumerable<Ticket> tickets =await _ticketService.GetIncompleteTicketsAsync(companyId);                
             
             return View(tickets);
         }
@@ -293,6 +289,7 @@ namespace AstraBugTracker.Controllers
                     Created = DataUtility.GetPostGresDate(DateTime.Now),
                     SenderId = userId,
                     RecipientId = projectManager?.Id,
+                    ProjectId = ticket.ProjectId,
                     NotificationTypeId = (await _context.NotificationTypes.FirstOrDefaultAsync(n=>n.Name == nameof(BTNotificationTypes.Ticket)))!.Id
                 };
 

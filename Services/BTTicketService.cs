@@ -148,7 +148,10 @@ namespace AstraBugTracker.Services
         {
             try
             {
-                return await _context.Tickets.Where(t => t.Project!.CompanyId == companyId && t.Archived == false).ToListAsync();
+                return await _context.Tickets.Where(t => t.Project!.CompanyId == companyId && t.Archived == false)
+                                             .Include(t=>t.TicketType)
+                                             .Include(t=>t.TicketPriority)
+                                             .ToListAsync();
             }
             catch (Exception)
             {
@@ -161,7 +164,11 @@ namespace AstraBugTracker.Services
         {
             try
             {
-                return await _context.Tickets.Where(t => t.DeveloperUserId == userId && t.Archived == false).ToListAsync();
+                return await _context.Tickets.Where(t => t.DeveloperUserId == userId && t.Archived == false)
+                    .Include(t=>t.TicketStatus)
+                    .Include(t=>t.TicketType)
+                    .Include(t=>t.TicketPriority)
+                    .ToListAsync();
             }
             catch (Exception)
             {

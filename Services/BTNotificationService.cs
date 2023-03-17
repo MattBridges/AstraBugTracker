@@ -26,7 +26,7 @@ namespace AstraBugTracker.Services
             {
                 if (notification != null)
                 {
-                    await _context.AddAsync(notification);
+                    await _context.Notification.AddAsync(notification);
                     await _context.SaveChangesAsync();
                 }
             }
@@ -50,7 +50,7 @@ namespace AstraBugTracker.Services
                         notification.Id = 0;
                         notification.RecipientId = adminId;
 
-                        await _context.AddAsync(notification);
+                        await _context.Notification.AddAsync(notification);
                     }
                     await _context.SaveChangesAsync();
                 }

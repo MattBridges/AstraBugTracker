@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<AstraBugTracker.Models.Ticket>
-@using X.PagedList;
-@using X.PagedList.Mvc.Core;
-@using X.PagedList.Web.Common;
+@using AstraBugTracker.Models.Enums;
+
 
 @{
     ViewData["Title"] = "Index";
@@ -13,20 +12,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
     <title>DataTables Basic | CORK - Multipurpose Bootstrap Dashboard Template </title>
     <link rel="icon" type="image/x-icon" href="../src/assets/img/favicon.ico" />
-    <link href="../layouts/modern-dark-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
-    <link href="../layouts/modern-dark-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
-    <script src="../layouts/modern-dark-menu/loader.js"></script>
+    <link href="~/layouts/modern-dark-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
+    <link href="~/layouts/modern-dark-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
+    <script src="~/layouts/modern-dark-menu/loader.js"></script>
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
     <link href="https://fonts.googleapis.com/css?family=Nunito:400,600,700" rel="stylesheet">
-    <link href="../src/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-    <link href="../layouts/modern-dark-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
-    <link href="../layouts/modern-dark-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="~/src/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/layouts/modern-dark-menu/css/light/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="~/layouts/modern-dark-menu/css/dark/plugins.css" rel="stylesheet" type="text/css" />
     <!-- END GLOBAL MANDATORY STYLES -->
     <!-- BEGIN PAGE LEVEL STYLES -->
-    <link rel="stylesheet" type="text/css" href="../src/plugins/src/table/datatable/datatables.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/src/table/datatable/datatables.css">
 
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/light/table/datatable/dt-global_style.css">
-    <link rel="stylesheet" type="text/css" href="../src/plugins/css/dark/table/datatable/dt-global_style.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/light/table/datatable/dt-global_style.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/dark/table/datatable/dt-global_style.css">
     <!-- END PAGE LEVEL STYLES -->
 
 </head>
@@ -40,10 +39,10 @@
                 <tr>
                     <th class="no-content"></th>
                     <th class="text-center"> @Html.DisplayNameFor(model => model.Title) </th>
-                    <th >Assigned To</th>
+                    <th>Assigned To</th>
                     <th>@Html.DisplayNameFor(model => model.Created)</th>
-                    <th >@Html.DisplayNameFor(model => model.TicketType)</th>
-                    <th >@Html.DisplayNameFor(model => model.TicketPriority)</th>
+                    <th>@Html.DisplayNameFor(model => model.TicketType)</th>
+                    <th>@Html.DisplayNameFor(model => model.TicketPriority)</th>
                 </tr>
             </thead>
             <tbody>
@@ -51,14 +50,57 @@
                 {
                     <tr>
                         <td class="text-center">  <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a></td>
-                        <td class="text-center" > @Html.DisplayFor(modelItem => item.Title)</td>
-                        <td >
+                        <td class="text-center"> @Html.DisplayFor(modelItem => item.Title)</td>
+                        <td>
                             <span><img src="../src/assets/img/profile-17.jpeg" class="profile-img" alt="avatar"></span>
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Created)</td>
-                        <td><span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketType!.Id)</span></td>
-                        <td><span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketPriority!.Id)</span></td>
-       
+                        <td>
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.WorkTask))
+                            {
+                                <span class="shadow-none badge badge-secondary">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.GeneralTask))
+                            {
+                                <span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.Defect))
+                            {
+                                <span class="shadow-none badge badge-danger">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.Enhancement))
+                            {
+                                <span class="shadow-none badge badge-dark">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.NewDevelopment))
+                            {
+                                <span class="shadow-none badge badge-info">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.ChangeRequest))
+                            {
+                                <span class="shadow-none badge badge-warning">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Urgent))
+                            {
+                                <span class="shadow-none badge badge-danger">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.High))
+                            {
+                                <span class="shadow-none badge badge-warning">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Medium))
+                            {
+                                <span class="shadow-none badge badge-secondary">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Low))
+                            {
+                                <span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                        </td>
+
                     </tr>
                 }
             </tbody>

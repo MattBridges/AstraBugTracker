@@ -8,7 +8,7 @@
     
 }
 <div class="d-flex justify-content-center mt-5 flex-column align-items-center">
-    <h3 class="my-5">Assign Project Manager</h3>
+    <h3 class="my-5">Assign New Developer</h3>
     <div class="card">
         <div class="card-header">
             <div class="card-title">@Model.Ticket!.Title</div>
@@ -16,6 +16,7 @@
         <div class="card-body">
             <form asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Ticket?.Id" method="post" class="d-flex flex-column">
                 <input type="hidden" asp-for="Ticket!.Id" />
+                <input type="hidden" asp-for="Ticket!.ProjectId" />
                 <select asp-items="Model.DeveloperList" asp-for="DeveloperId" class="form-control">
                     <option value="">Unassigned</option>
                 </select>

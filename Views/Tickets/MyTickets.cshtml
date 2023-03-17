@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<AstraBugTracker.Models.Ticket>
+@using AstraBugTracker.Models.Enums;
 
 @{
     ViewData["Title"] = "Index";
@@ -26,7 +27,7 @@
     <!-- END PAGE LEVEL STYLES -->
 
 </head>
-<h1 class="text-center">All Tickets</h1>
+<h1 class="text-center">My Open Tickets</h1>
 
 
 <div class="col-xl-12 col-lg-12 col-sm-12  layout-spacing">
@@ -52,8 +53,51 @@
                             <span><img src="../src/assets/img/profile-17.jpeg" class="profile-img" alt="avatar"></span>
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Created)</td>
-                        <td><span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketType!.Id)</span></td>
-                        <td><span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketPriority!.Id)</span></td>
+                        <td>
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.WorkTask))
+                            {
+                                <span class="shadow-none badge badge-secondary">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.GeneralTask))
+                            {
+                                <span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.Defect))
+                            {
+                                <span class="shadow-none badge badge-danger">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.Enhancement))
+                            {
+                                <span class="shadow-none badge badge-dark">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.NewDevelopment))
+                            {
+                                <span class="shadow-none badge badge-info">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                            @if (item.TicketType!.Name == nameof(BTTicketTypes.ChangeRequest))
+                            {
+                                <span class="shadow-none badge badge-warning">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
+                            }
+                        </td>
+
+                        <td>
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Urgent))
+                            {
+                                <span class="shadow-none badge badge-danger">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.High))
+                            {
+                                <span class="shadow-none badge badge-warning">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Medium))
+                            {
+                                <span class="shadow-none badge badge-secondary">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Low))
+                            {
+                                <span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
+                            }
+                        </td>
 
                     </tr>
                 }
