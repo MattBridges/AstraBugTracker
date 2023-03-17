@@ -200,13 +200,15 @@ namespace AstraBugTracker.Controllers
         }
 
         // GET: Projects/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            IEnumerable<Company> companies = _context.Companies.ToList();            
+            IEnumerable<Company> companies = _context.Companies.ToList();  
+            int? companyId = User.Identity?.GetCompanyId();
 
             ViewData["ProjectPriorityId"] = new SelectList(_context.ProjectPriorities, "Id", "Name");
+            ViewData["PMUserIds"] = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.ProjectManager), companyId!.Value), "Id", "FullName");
 
-            
+
             return View(new Project());
         }
 
@@ -215,7 +217,7 @@ namespace AstraBugTracker.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived,CompanyId")] Project project)
+        public async Task<IActionResult> Create([Bind("Id,Name,Description,Created,StartDate,EndDate,ProjectPriorityId,ImageFileData,ImageFileType,ImageFormFile,Archived,CompanyId, PMUserId")] Project project, string PMUserId)
         {
             ModelState.Remove("CompanyId");
             if (ModelState.IsValid)
@@ -228,6 +230,8 @@ namespace AstraBugTracker.Controllers
                 project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
                 project.EndDate = DataUtility.GetPostGresDate(project.EndDate);
 
+             
+
                 //Image Service
                 if (project.ImageFormFile != null)
                 {
@@ -236,6 +240,10 @@ namespace AstraBugTracker.Controllers
                 }
 
                 await _projectsService.AddProjectAsync(project);
+
+                //Assign Project Manager
+                await _projectsService.AddProjectManagerAsync(PMUserId, project.Id);
+
                 return RedirectToAction(nameof(Index));
             }
            

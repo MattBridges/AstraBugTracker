@@ -217,14 +217,17 @@ namespace AstraBugTracker.Services
             try
             {
                 Project? project = await _context.Projects.Include(p => p.Members).FirstOrDefaultAsync(p => p.Id == projectId);
-
-                foreach (BTUser member in project!.Members)
+                if(project != null && project!.Members != null)
                 {
-                    if (await _rolesService.IsUserInRoleAsync(member, nameof(BTRoles.ProjectManager)))
+                    foreach (BTUser member in project!.Members)
                     {
-                        return member;
+                        if (await _rolesService.IsUserInRoleAsync(member, nameof(BTRoles.ProjectManager)))
+                        {
+                            return member;
+                        }
                     }
                 }
+             
                 return null!;
             }
             catch (Exception)

@@ -86,10 +86,20 @@
                                     </div>*@
 
                                     <!--Priority List-->
-                                    <div class="invoice-action-currency mt-5">
+                                    <div class="invoice-action-currency mx-3 mt-5">
                                         <div class="form-group">
                                             <label><i data-feather="alert-circle"></i>  Priority</label>
                                                 <select class="form-select" asp-items="@ViewBag.ProjectPriorityId" name="ProjectPriorityId"></select>
+                                        </div>
+                                    </div>
+                                    @*Developer List*@
+                                      <div class="invoice-action-currency mx-3 mt-5">
+                                        <div class="form-group">
+                                            
+                                            <label><i data-feather="user-check"></i> Assign A Developer</label>
+                                                <select class="form-select" asp-items="@ViewBag.PMUserIds" name="PMUserId">
+                                                    <option value="">Unassigned</option>
+                                                </select>
                                         </div>
                                     </div>
                                 </div>
