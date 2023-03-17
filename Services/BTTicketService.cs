@@ -188,15 +188,15 @@ namespace AstraBugTracker.Services
                 {
                    tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && t.Archived == false && t.DeveloperUser == null).ToListAsync();
                 }
-                //Get unassigned tickets PM is in charge of
-                if (await _rolesService.IsUserInRoleAsync(user!, nameof(BTRoles.ProjectManager)))
-                {
-                    tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && 
-                                                                t.Archived == false && 
-                                                                t.DeveloperUser == null && 
-                                                                user!.Projects!.Contains(t.Project))
-                                                    .ToListAsync();
-                }
+                ////Get unassigned tickets PM is in charge of
+                //if (await _rolesService.IsUserInRoleAsync(user!, nameof(BTRoles.ProjectManager)))
+                //{
+                //    tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && 
+                //                                                t.Archived == false && 
+                //                                                t.DeveloperUser!.LastName != "Unassigned" && 
+                //                                                user!.Projects!.Contains(t.Project))
+                //                                    .ToListAsync();
+                //}
                 return tickets;
             }
             catch (Exception)
