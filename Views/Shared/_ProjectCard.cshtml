@@ -26,10 +26,18 @@
                                 <div class="dropdown-menu left">
                                     @if (@User.IsInRole("Admin"))
                                     {
-                                        <a asp-action="AssignPM" asp-route-id="@Model.Id" class="dropdown-item" ><i data-feather="user-plus"></i><span>Assign Project Manager</span> </a>
+                                        <a asp-action="AssignPM" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="user-plus"></i><span>Assign Project Manager</span> </a>
                                     }
-                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="dropdown-item" ><i data-feather="edit-3"></i><span>Edit Project</span></a>
-                                    <a asp-action="Delete" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="delete"></i><span>Archive Project</span></a>
+                                    <a asp-action="Edit" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="edit-3"></i><span>Edit Project</span></a>
+                                    @if (!Model.Archived)
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="delete"></i><span>Archive Project</span></a>
+                                    }
+                                    @if (Model.Archived)
+                                    {
+                                        <a asp-action="Delete" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="delete"></i><span>Unarchive Project</span></a>
+                                    }
+
                                 </div>
                             </div>
                         </h4>

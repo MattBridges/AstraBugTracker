@@ -1,0 +1,50 @@
+﻿@model IEnumerable<AstraBugTracker.Models.Project>
+
+@{
+    ViewData["Title"] = "My Archived Projects";
+}
+
+<div class="row h-100">
+    <h1 class="text-center">My Archived Projects</h1>
+    <div class="row layout-top-spacing">
+        <!--Begin Cards-->
+        <div class="row">
+            @foreach(Project project in Model)
+            {
+                <partial name="_ProjectCard" model="@project" />
+            }
+        </div>
+
+        <!--End Cards-->
+        
+
+        <!-- Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Are you sure you want to archive this project?</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
+                            <svg> ... </svg>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <p class="modal-text">Mauris mi tellus, pharetra vel mattis sed, tempus ultrices eros. Phasellus egestas sit amet velit sed luctus. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Suspendisse potenti. Vivamus ultrices sed urna ac pulvinar. Ut sit amet ullamcorper mi. </p>
+                    </div>
+                    <div class="modal-footer">
+                        <button class="btn btn btn-light-dark" data-bs-dismiss="modal"><i class="flaticon-cancel-12"></i>Back</button>
+                        <form asp-action="Delete">
+
+                            <input type="hidden" data="Id" />
+                            <input type="submit" value="Delete" class="btn btn-danger" />
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+</div>
+

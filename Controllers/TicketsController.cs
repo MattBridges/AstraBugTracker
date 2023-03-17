@@ -91,20 +91,12 @@ namespace AstraBugTracker.Controllers
             if (!string.IsNullOrEmpty(viewModel.DeveloperId))
             {
                 //Get Snapshot
-
-                //Ticket? oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(ticketId, companyId)
-                Ticket? oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(viewModel.Ticket!.Id, companyId);
-
-                
+                BTUser? btUser = await _userManager.FindByIdAsync(userId!);
+                Ticket? oldTicket = await _ticketService.GetTicketAsNoTrackingAsync(viewModel.Ticket!.Id, companyId);                
                 await _ticketService.AddDeveloperToTicketAsync(viewModel.Ticket?.Id, viewModel.DeveloperId);
-
                 Ticket? newTicket = await _ticketService.GetTicketAsNoTrackingAsync(viewModel.Ticket!.Id, companyId);
                 await _historyService.AddHistoryAsync(oldTicket,newTicket,userId!);
-
-                //BTUser? projectManager = await _projectsService.GetProjectManagerAsync(viewModel.Ticket.ProjectId);
-                BTUser? btUser = await _userManager.FindByIdAsync(userId!);
-
-                await _historyService.AddHistoryAsync(null!, newTicket!, userId!);
+                //await _historyService.AddHistoryAsync(null!, newTicket!, userId!);
 
                 Notification? notification = new()
                 {
@@ -244,7 +236,7 @@ namespace AstraBugTracker.Controllers
         {
             int companyId = User.Identity!.GetCompanyId();
             ViewData["DeveloperUserId"] = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer),companyId), "Id", "FullName");
-            ViewData["ProjectId"] = new SelectList(await _projectsService.GetActiveProjectsAsync(companyId), "Id", "Name");
+            ViewData["ProjectId"] = new SelectList(await _projectsService.GetActiveProjectsAsync(companyId, null), "Id", "Name");
             ViewData["SubmitterUserId"] = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId), "Id", "Id");
             ViewData["TicketPriorityId"] = new SelectList(await _ticketService.GetTicketPrioritiesAsync(), "Id", "Name");
             ViewData["TicketStatusId"] = new SelectList(await _ticketService.GetTicketStatusesAsync(), "Id", "Name");
@@ -325,7 +317,7 @@ namespace AstraBugTracker.Controllers
 
             int companyId = User.Identity!.GetCompanyId();
             ViewData["DeveloperUserId"] = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Developer), companyId), "Id", "FullName", ticket.DeveloperUser);
-            ViewData["ProjectId"] = new SelectList(await _projectsService.GetActiveProjectsAsync(companyId), "Id", "Name");
+            ViewData["ProjectId"] = new SelectList(await _projectsService.GetActiveProjectsAsync(companyId, null), "Id", "Name");
             ViewData["SubmitterUserId"] = new SelectList(await _rolesService.GetUsersInRoleAsync(nameof(BTRoles.Submitter), companyId), "Id", "Id");
             ViewData["TicketPriorityId"] = new SelectList(await _ticketService.GetTicketPrioritiesAsync(), "Id", "Name");
             ViewData["TicketStatusId"] = new SelectList(await _ticketService.GetTicketStatusesAsync(), "Id", "Name");

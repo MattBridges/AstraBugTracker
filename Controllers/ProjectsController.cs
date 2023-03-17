@@ -139,22 +139,42 @@ namespace AstraBugTracker.Controllers
             return View(viewModel);
         }
 
+        public async Task<IActionResult> MyProjects()
+        {
+            int? companyId = User.Identity!.GetCompanyId();
+            BTUser? user =await _userManager.GetUserAsync(User);
+            return View(await _projectsService.GetActiveProjectsAsync(companyId,user));
+        }
+
+        public async Task<IActionResult> MyArchivedProjects()
+        {
+            int? companyId = User.Identity!.GetCompanyId();
+            BTUser? user = await _userManager.GetUserAsync(User);
+            return View(await _projectsService.GetActiveProjectsAsync(companyId, user, true));
+        }
+
+        public async Task<IActionResult> CompanyArchivedProjects()
+        {
+            int? companyId = User.Identity!.GetCompanyId();
+            return View(await _projectsService.GetActiveProjectsAsync(companyId,null,true));
+        }
+
+
+
         // GET: All Projects
         public async Task<IActionResult> Index()
         {
-            int companyId = User.Identity!.GetCompanyId();
-            IEnumerable<Project> projects = await _projectsService.GetActiveProjectsAsync(companyId);
-
-            return View(projects);
+            int? companyId = User.Identity!.GetCompanyId();
+            return View(await _projectsService.GetActiveProjectsAsync(companyId, null, false));
         }
 
         // GET: My Projects
         public async Task<IActionResult> ViewMyProjects()
         {
             int companyId = User.Identity!.GetCompanyId();
-            string? userId = _userManager.GetUserId(User);
+            BTUser? user = await _userManager.GetUserAsync(User);
             
-            IEnumerable<Project> userProjects = await _projectsService.GetActiveProjectsAsync(companyId, userId);
+            IEnumerable<Project> userProjects = await _projectsService.GetActiveProjectsAsync(companyId, user);
 
             return View(userProjects);
         }
@@ -312,6 +332,10 @@ namespace AstraBugTracker.Controllers
             return View(project);
         }
 
+
+
+
+
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -324,13 +348,16 @@ namespace AstraBugTracker.Controllers
             Project? project = await _context.Projects.FindAsync(id);
             if (project != null)
             {
-                project.Archived = true;
+                project.Archived = !project.Archived;
                 _context.Projects.Update(project);
             }
             
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
+
+         
+     
 
         private bool ProjectExists(int id)
         {
