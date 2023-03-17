@@ -5,6 +5,7 @@
 @inject IBTFileService _FileService;
 @inject IBTProjectsService _ProjectService;
 
+
 @{
     ViewData["Title"] = "Details";
     BTUser? projectManager = await _ProjectService.GetProjectManagerAsync(Model.Id);
@@ -65,14 +66,26 @@
             <div class="card m-1 p-2">
                 <div class="header">
                     <h2>Project Manager</h2>
+                    <div class="dropdown-list dropdown" role="group">
+                                <a href="javascript:void(0);" class="dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-more-horizontal"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="12" r="1"></circle><circle cx="5" cy="12" r="1"></circle></svg>
+                                </a>
+                                <div class="dropdown-menu left">
+                                    @if (@User.IsInRole("Admin"))
+                                    {
+                                        <a asp-action="AssignPM" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="user-plus"></i><span>Re-Assign Project Manager</span> </a>
+                                    }                        
+
+                                </div>
+                            </div>
                     <hr />
                 </div>
                 <div class="body" style="overflow-y:auto;height:300px;">
                     <div class="col-12 text-center">
-                        <img class="rounded-circle" style="height:250px;" src="~/img/DefaultUserImage.jpg" />
+                        <img class="rounded-circle" style="height:250px;" src="@_FileService.ConvertByteArrayToFile(projectManager.ImageFileData!, projectManager.ImageFileType!,(int)DefaultImage.BTUserImage)" />
                     </div>
 
-                    <div class="col-12 text-center">
+                    <div class="col-12 text-center mt-2">
                         <h2>@projectManager.FullName</h2>
                     </div>
 
@@ -96,26 +109,17 @@
 
 
                         @* Logic for avatars *@
+                        <div class="avatar--group mb-2">
                         @foreach (BTUser member in Model.Members)
                         {
-                            <p>@member.FullName</p>
-                        }
-                        <div class="avatar--group mb-2">
                             <div class="avatar avatar-sm m-0">
-                                <img alt="avatar" src="../src/assets/img/profile-16.jpeg" class="rounded-circle">
+                                <img alt="avatar" src="@_FileService.ConvertByteArrayToFile(member.ImageFileData!, member.ImageFileType!, (int)DefaultImage.BTUserImage)" class="rounded-circle">
                             </div>
-                            <div class="avatar avatar-sm">
-                                <img alt="avatar" src="../src/assets/img/delete-user-4.jpeg" class="rounded-circle">
-                            </div>
-                            <div class="avatar avatar-sm">
-                                <img alt="avatar" src="../src/assets/img/profile-5.jpeg" class="rounded-circle">
-                            </div>
-                            <div class="avatar avatar-sm">
-                                <span class="avatar-title rounded-circle">AG</span>
-                            </div>
+               
+                        }
                         </div>
                     </ul>
-                    <a class="btn btn-primary" asp-action="AssignProjectMembers" asp-controller="Projects" asp-route-id="@Model.Id">Assign Members</a>
+                    <a class="btn btn-primary" asp-action="AssignProjectMembers" asp-controller="Projects" asp-route-id="@Model.Id">Add Members</a>
                 </div>
             </div>
         </div>

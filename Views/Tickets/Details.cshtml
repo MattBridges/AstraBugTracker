@@ -81,7 +81,8 @@
                                     @*Loop to show comments made for the Ticket*@
                                     @foreach (TicketComment comment in ViewBag.Comments)
                                     {
-                                        <p>@comment.Comment</p>
+                                        <p></p>
+                                        <p>@comment.Created: @comment.User!.FullName - @comment.Comment</p>
                                     }
                                 </ul>
                             </div>

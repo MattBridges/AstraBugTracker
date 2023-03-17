@@ -111,7 +111,6 @@ namespace AstraBugTracker.Services
             }
         }
 
-
         public async Task DeleteProjectAsync(Project project)
         {
             try
@@ -285,7 +284,6 @@ namespace AstraBugTracker.Services
                 throw;
             }
         }
-
 
     }
 }

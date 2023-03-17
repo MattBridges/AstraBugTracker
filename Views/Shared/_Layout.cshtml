@@ -4,9 +4,11 @@
 
 @inject UserManager<BTUser> _UserManager;
 @inject IBTFileService _FileService;
+@inject IBTRolesService _RoleService;
 
 @{
     BTUser? loggedInUser = await _UserManager.GetUserAsync(User);
+    IEnumerable<string> userRoles = await _RoleService.GetUserRolesAsync(loggedInUser!);
 }
 
 <!DOCTYPE html>
@@ -205,7 +207,7 @@
                         <a href="javascript:void(0);" class="nav-link dropdown-toggle user" id="userProfileDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             <div class="avatar-container">
                                 <div class="avatar avatar-sm avatar-indicators avatar-online">
-                                    <img alt="avatar" src="/img/DefaultUserImage.jpg" class="rounded-circle">
+                                    <img alt="avatar" src="@_FileService.ConvertByteArrayToFile(loggedInUser!.ImageFileData!, loggedInUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" class="rounded-circle">
                                 </div>
                             </div>
                         </a>
@@ -217,14 +219,13 @@
                                         &#x1F44B;
                                     </div>
                                     <div class="media-body">
-                                        <h5>@loggedInUser.FullName</h5>
-                                        <!--TODO: Add User Role-->
-                                        <p class="">Admin</p>
+                                        <h5>@loggedInUser!.FullName</h5>
+                                        <p>@userRoles.First()</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="dropdown-item">
-                                <a href="user-profile.html"><i data-feather="user"></i><span>Profile</span></a>
+                                <a asp-area="Identity" asp-page="/Account/Manage/Index"><i data-feather="user"></i><span>Profile</span></a>
                             </div>
                        
                             <div class="dropdown-item">
@@ -274,11 +275,13 @@
                     <div class="profile-info">
                         <div class="user-info">
                             <div class="profile-img">
-                                <img src="/img/DefaultUserImage.jpg" alt="avatar">
+                                <img src="@_FileService.ConvertByteArrayToFile(loggedInUser!.ImageFileData!, loggedInUser!.ImageFileType!,(int)DefaultImage.BTUserImage)" alt="avatar">
                             </div>
                             <div class="profile-content">
-                                <h6 class="">@loggedInUser.FullName</h6>
+                                <h6 class="">@loggedInUser!.FullName</h6>
+                                <p>@userRoles.First()</p>
                             </div>
+                         
                         </div>
                     </div>
 

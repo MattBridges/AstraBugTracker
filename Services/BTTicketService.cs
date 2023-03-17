@@ -148,10 +148,13 @@ namespace AstraBugTracker.Services
         {
             try
             {
-                return await _context.Tickets.Where(t => t.Project!.CompanyId == companyId && t.Archived == false)
-                                             .Include(t=>t.TicketType)
-                                             .Include(t=>t.TicketPriority)
+                IEnumerable<Ticket> tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == companyId && t.Archived == false)
+                                             .Include(t => t.TicketType)
+                                             .Include(t => t.DeveloperUser)
+                                             .Include(t => t.TicketPriority)
+                                             .Include(t => t.TicketStatus)
                                              .ToListAsync();
+                return tickets;
             }
             catch (Exception)
             {
@@ -166,6 +169,7 @@ namespace AstraBugTracker.Services
             {
                 return await _context.Tickets.Where(t => t.DeveloperUserId == userId && t.Archived == false)
                     .Include(t=>t.TicketStatus)
+                    .Include(t => t.DeveloperUser)
                     .Include(t=>t.TicketType)
                     .Include(t=>t.TicketPriority)
                     .ToListAsync();
@@ -186,17 +190,13 @@ namespace AstraBugTracker.Services
                 //Get all unassigned tickets for the admin in the company
                 if (await _rolesService.IsUserInRoleAsync(user!, nameof(BTRoles.Admin)))
                 {
-                   tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && t.Archived == false && t.DeveloperUser == null).ToListAsync();
+                   tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && t.Archived == false && t.DeveloperUser == null)
+                                                   .Include(t=>t.TicketPriority)
+                                                   .Include(t=>t.TicketStatus)
+                                                   .Include(t=>t.TicketType)
+                                                   .ToListAsync();
                 }
-                ////Get unassigned tickets PM is in charge of
-                //if (await _rolesService.IsUserInRoleAsync(user!, nameof(BTRoles.ProjectManager)))
-                //{
-                //    tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == user!.CompanyId && 
-                //                                                t.Archived == false && 
-                //                                                t.DeveloperUser!.LastName != "Unassigned" && 
-                //                                                user!.Projects!.Contains(t.Project))
-                //                                    .ToListAsync();
-                //}
+    
                 return tickets;
             }
             catch (Exception)
