@@ -4,9 +4,11 @@
 
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
 using AstraBugTracker.Models;
+using AstraBugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -17,13 +19,16 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BTUser> _userManager;
         private readonly SignInManager<BTUser> _signInManager;
+        private readonly IBTFileService _FileService;
 
         public IndexModel(
             UserManager<BTUser> userManager,
-            SignInManager<BTUser> signInManager)
+            SignInManager<BTUser> signInManager,
+            IBTFileService fileService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            _FileService= fileService;
         }
 
         /// <summary>
@@ -52,6 +57,21 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account.Manage
         /// </summary>
         public class InputModel
         {
+
+
+            [Display(Name = "First Name")]
+            [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at most {1} characters", MinimumLength = 2)]
+            public string FirstName { get; set; }
+         
+            [Display(Name = "Last Name")]
+            [StringLength(40, ErrorMessage = "The {0} must be at least {2} and at most {1} characters", MinimumLength = 2)]
+            public string LastName { get; set; }
+
+            public byte[] ImageFileData { get; set; }
+            public string ImageFileType { get; set; }
+            [NotMapped]
+            public virtual IFormFile ImageFormFile { get; set; }
+
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
@@ -70,7 +90,10 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                FirstName = user.FirstName, 
+                LastName = user.LastName,
+                ImageFileData = user.ImageFileData
             };
         }
 
@@ -99,6 +122,18 @@ namespace AstraBugTracker.Areas.Identity.Pages.Account.Manage
                 await LoadAsync(user);
                 return Page();
             }
+
+            //Custom code
+            user.FirstName= Input.FirstName;
+            user.LastName= Input.LastName;
+
+            if(Input.ImageFormFile != null)
+            {
+                user.ImageFileData = await _FileService.ConvertFileToByteArrayAsync(Input.ImageFormFile);
+                user.ImageFileType= Input.ImageFormFile.ContentType;
+            }
+
+            await _userManager.UpdateAsync(user);
 
             var phoneNumber = await _userManager.GetPhoneNumberAsync(user);
             if (Input.PhoneNumber != phoneNumber)

@@ -47,11 +47,11 @@ namespace AstraBugTracker.Services
             }
         }
 
-        public async Task<IEnumerable<string>>GetUserRolesAsync(BTUser user)
+        public async Task<IEnumerable<string>>GetUserRolesAsync(BTUser? user)
         {
             try
             {
-                IEnumerable<string> result = await _userManager.GetRolesAsync(user);
+                IEnumerable<string>? result = await _userManager.GetRolesAsync(user!);
                 return result;
             }
             catch (Exception)

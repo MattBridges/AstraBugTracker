@@ -8,7 +8,13 @@
 
 @{
     BTUser? loggedInUser = await _UserManager.GetUserAsync(User);
-    IEnumerable<string> userRoles = await _RoleService.GetUserRolesAsync(loggedInUser!);
+    List<string> el = new List<string>();
+    IEnumerable<string> userRoles = el;
+    @if (loggedInUser!=null)
+    {
+       userRoles = await _RoleService.GetUserRolesAsync(loggedInUser!);        
+    }
+    
 }
 
 <!DOCTYPE html>
@@ -220,7 +226,7 @@
                                     </div>
                                     <div class="media-body">
                                         <h5>@loggedInUser!.FullName</h5>
-                                        <p>@userRoles.First()</p>
+                                            <p>@userRoles.First()</p>
                                     </div>
                                 </div>
                             </div>
