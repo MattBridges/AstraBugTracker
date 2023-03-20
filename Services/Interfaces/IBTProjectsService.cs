@@ -21,6 +21,8 @@ namespace AstraBugTracker.Services.Interfaces
         public Task<Project> GetProjectByIdAsync(int? projectId, int? companyId);
         public Task<BTUser> GetProjectManagerAsync(int? projectId);
         public Task<IEnumerable<Project>> GetActiveProjectsAsync(int? companyId, BTUser? user = null, bool? isArchived=false);
-        
-    }
+        public Task<IEnumerable<Project>> GetAllProjectSByPriorityAsync(int? companyId, string? priority);
+
+
+	}
 }

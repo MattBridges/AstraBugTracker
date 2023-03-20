@@ -3,6 +3,7 @@ using AstraBugTracker.Models;
 using AstraBugTracker.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using AstraBugTracker.Models.Enums;
+using System.ComponentModel.Design;
 
 namespace AstraBugTracker.Services
 {
@@ -283,10 +284,35 @@ namespace AstraBugTracker.Services
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<Project>> GetAllProjectSByPriorityAsync(int? companyId,string? priority)
+        {
+            try
+            {
+                IEnumerable<Project> companyProjects = await GetActiveProjectsAsync(companyId);
+                List<Project>? projectByPriorities= new List<Project>();
+
+                foreach(Project project in companyProjects)
+                {
+					if (project.ProjectPriority!.Name != priority)
+					{
+						projectByPriorities.Add(project);
+					}
+				}
+
+                return projectByPriorities;
+
+			}
+            catch (Exception)
+            {
 
                 throw;
             }
         }
 
-    }
+
+	}
 }
