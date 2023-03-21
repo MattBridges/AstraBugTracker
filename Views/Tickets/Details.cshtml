@@ -54,7 +54,8 @@
                             @*Ticket status*@
                             <li><strong>Status:</strong> <span class=""> @Model.TicketStatus!.Name</span></li>
                         </ul>
-                        <a class="btn btn-primary" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id">Assign New Developer</a>
+                        <a class="btn btn-primary" asp-action="AssignDeveloper" asp-controller="Tickets" asp-route-id="@Model.Id"><i style="height:15px;" data-feather="user-plus"></i> Assign New Developer</a>
+                        <a class="btn btn-primary" asp-action="Edit" asp-controller="Tickets" asp-route-id="@Model.Id"><i style="height:15px;" data-feather="edit-2"></i> Update Ticket</a>
                     </div>
                 </div>
             </div>

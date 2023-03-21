@@ -10,11 +10,11 @@
     BTUser? loggedInUser = await _UserManager.GetUserAsync(User);
     List<string> el = new List<string>();
     IEnumerable<string> userRoles = el;
-    @if (loggedInUser!=null)
+    @if (loggedInUser != null)
     {
-       userRoles = await _RoleService.GetUserRolesAsync(loggedInUser!);        
+        userRoles = await _RoleService.GetUserRolesAsync(loggedInUser!);
     }
-    
+
 }
 
 <!DOCTYPE html>
@@ -29,9 +29,12 @@
     <link href="~/layouts/modern-dark-menu/css/light/loader.css" rel="stylesheet" type="text/css" />
     <link href="~/layouts/modern-dark-menu/css/dark/loader.css" rel="stylesheet" type="text/css" />
     <script src="~/layouts/modern-dark-menu/loader.js"></script>
-    
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/src/table/datatable/datatables.css">
 
-    
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/light/table/datatable/dt-global_style.css">
+    <link rel="stylesheet" type="text/css" href="~/src/plugins/css/dark/table/datatable/dt-global_style.css">
+
+
 
 
     <link href="~/src/assets/css/light/elements/popover.css" rel="stylesheet" type="text/css">
@@ -66,7 +69,7 @@
 
     <link href="~/src/assets/css/dark/components/list-group.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" type="text/css" href="~/src/assets/css/dark/widgets/modules-widgets.css">
-    <link href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css">
+
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
 </head>
@@ -226,14 +229,14 @@
                                     </div>
                                     <div class="media-body">
                                         <h5>@loggedInUser!.FullName</h5>
-                                            <p>@userRoles.First()</p>
+                                        <p>@userRoles.First()</p>
                                     </div>
                                 </div>
                             </div>
                             <div class="dropdown-item">
                                 <a asp-area="Identity" asp-page="/Account/Manage/Index"><i data-feather="user"></i><span>Profile</span></a>
                             </div>
-                       
+
                             <div class="dropdown-item">
                                 <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit();"><i class="feather feather-user" data-feather="log-out"></i><span>Logout</span></a>
                             </div>
@@ -274,7 +277,7 @@
                             <img src="~/img/in-tracker-high-resolution-logo-color-on-transparent-background.png" style="height:30px; width:100%;" alt="logo">
                         </a>
                     </div>
-   
+
                 </div>
                 @if (User.Identity!.IsAuthenticated)
                 {
@@ -287,7 +290,7 @@
                                 <h6 class="">@loggedInUser!.FullName</h6>
                                 <p>@userRoles.First()</p>
                             </div>
-                         
+
                         </div>
                     </div>
 
@@ -302,7 +305,7 @@
                             <a asp-action="Dashboard" asp-controller="Home" class="dropdown-toggle">
                                 <div class="">
                                     <span><i data-feather="home"></i>Dashboard</span>
-                                </div>                              
+                                </div>
                             </a>
                         </li>
                         <!--Projects Menu-->
@@ -381,9 +384,9 @@
                                     <li>
                                         <a asp-action="Edit" asp-controller="Companies"> Update Company </a>
                                     </li>
-                                    <li>
+                                @*    <li>
                                         <a asp-action="ViewUsers" asp-controller="Companies">View All Users </a>
-                                    </li>
+                                    </li>*@
                                     <li>
                                         <a asp-action="Create" asp-controller="Invites">Invite User </a>
                                     </li>
@@ -405,11 +408,14 @@
         </div>
         <!--  END SIDEBAR  -->
         <div id="content" class="main-content">
+            <div class="overlay"></div>
+            <div class="search-overlay"></div>
+
 
             <div class="layout-px-spacing">
                 <div class="middle-content container-xxl p-0">
-            @RenderBody()
-            </div>
+                    @RenderBody()
+                </div>
             </div>
             <!--  BEGIN FOOTER  -->
             <div class="footer-wrapper  ">
@@ -440,7 +446,7 @@
     <script src="~/src/assets/js/custom.js"></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
-    <script src="~/src/plugins/src/apex/apexcharts.min.js"></script>
+ 
     <script src="~/src/assets/js/dashboard/dash_1.js"></script>
     <script src="~/src/plugins/src/filepond/filepond.min.js"></script>
     <script src="~/src/plugins/src/filepond/FilePondPluginFileValidateType.min.js"></script>
@@ -453,8 +459,7 @@
     <script src="~/src/plugins/src/flatpickr/flatpickr.js"></script>
     <script src="~/src/assets/js/apps/invoice-add.js"></script>
     <script src="~/src/plugins/src/table/datatable/datatables.js"></script>
-    <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-    
+
 
     <script src="~/src/assets/js/widgets/modules-widgets.js"></script>
 
@@ -462,7 +467,6 @@
     <!-- BEGIN PAGE LEVEL PLUGINS/CUSTOM SCRIPTS -->
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    @*<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>*@
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>

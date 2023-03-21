@@ -37,7 +37,7 @@ namespace AstraBugTracker.Controllers
             else
             {
 
-            return View("LandingPage");
+                return View("LandingPage");
             }
         }
 

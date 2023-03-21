@@ -85,7 +85,7 @@ namespace AstraBugTracker.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin,Project Manager")]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> AssignProjectMembers(int? id)
         {
             if (id == null)
@@ -112,7 +112,7 @@ namespace AstraBugTracker.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize(Roles = "Admin,Project Manager")]
+        [Authorize(Roles = "Admin,ProjectManager")]
         public async Task<IActionResult> AssignProjectMembers(ProjectMemberViewModel viewModel)
         {
             int companyId = User.Identity!.GetCompanyId();
@@ -158,8 +158,6 @@ namespace AstraBugTracker.Controllers
             int? companyId = User.Identity!.GetCompanyId();
             return View(await _projectsService.GetActiveProjectsAsync(companyId,null,true));
         }
-
-
 
         // GET: All Projects
         public async Task<IActionResult> Index()
@@ -226,7 +224,7 @@ namespace AstraBugTracker.Controllers
 
                 project.CompanyId = companyId;
                 //Reformat Dates
-                project.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+                project.Created = DataUtility.GetPostGresDate(DateTime.Now);
                 project.StartDate = DataUtility.GetPostGresDate(project.StartDate);
                 project.EndDate = DataUtility.GetPostGresDate(project.EndDate);
 
@@ -339,10 +337,6 @@ namespace AstraBugTracker.Controllers
 
             return View(project);
         }
-
-
-
-
 
         // POST: Projects/Delete/5
         [HttpPost, ActionName("Delete")]

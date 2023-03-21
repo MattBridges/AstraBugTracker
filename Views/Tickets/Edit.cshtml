@@ -10,12 +10,11 @@
 </head>
 
 
-<h1 class="text-center pt-3">Create Ticket</h1>
+<h1 class="text-center pt-3">Update Ticket</h1>
 <div class="layout-px-spacing">
     <div class="middle-content container-xxl">
-        <form asp-action="Edit" onsubmit="GetQuillInput()">
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" id="quillEditor" asp-for="@Model.Description" />
             <div class="row layout-spacing layout-top-spacing">
                 @*Main Area*@
                 <div class="col-xxl-9 col-xl-12 col-lg-12 col-md-12 col-sm-12 ">
@@ -35,11 +34,8 @@
                                     <div class="col-lg-12">
                                         <div class="statbox widget box box-shadow form-control g-0">
                                             <div class="widget-content widget-content-area">
-                                                <div id="editor-container" class="ql-container ql-snow " style="height:25vh;margin-top:-1px !important;">
-                                                    <div asp-for="Description" class="ql-editor" data-gramm="false" contenteditable="true">@Html.Raw(@Model.Description)</div>
-                                                    <div class="ql-clipboard" contenteditable="true" tabindex="-1"></div>
-                                                    <div class="ql-tooltip ql-hidden"><a class="ql-preview" target="_blank" href="about:blank"></a><input type="text" data-formula="e=mc^2" data-link="https://quilljs.com" data-video="Embed URL"><a class="ql-action"></a><a class="ql-remove"></a></div>
-                                                </div>
+                                                <textarea asp-for="Description" class="form-control description mt-1 " placeholder="Project Description" style="height:525px;"></textarea>
+                                                <span asp-validation-for="Description" class="text-danger"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -54,6 +50,7 @@
                     <div class="widget-content widget-content-area blog-create-section">
                         <div class="row">
                             @*TODO:make this a select list*@
+                           
                             <div class="form-group">
                                 <label asp-for="ProjectId" class="control-label">Project</label>
                                 <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
@@ -71,13 +68,13 @@
                                 <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
                             </div>
                             <div class="form-group">
-                                <label asp-for="DeveloperUserId" class="control-label"></label>
+                                <label asp-for="DeveloperUserId" class="control-label">Assigned Developer</label>
                                 <select asp-for="DeveloperUserId" class="form-control" asp-items="ViewBag.DeveloperUserId"></select>
                             </div>
 
 
                             <div class="col-xxl-12 col-sm-4 col-12 mx-auto">
-                                <input type="submit" value="Create Ticket" class="btn btn-secondary" />
+                                <input type="submit" value="Update Ticket" class="btn btn-secondary" />
                             </div>
                         </div>
                     </div>
@@ -95,26 +92,9 @@
 
 
 
-<script src="~/src/plugins/src/editors/quill/quill.js"></script>
+
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
 }
-<script>
-
-    var quill = new Quill('#editor-container', {
-        modules: {
-            toolbar: [
-                [{ header: [1, 2, false] }],
-                ['bold', 'italic', 'underline'],
-                ['image', 'code-block']
-            ]
-        },
-        placeholder: 'Enter Ticket Details',
-        theme: 'snow'  // or 'bubble'
-    });
-    function GetQuillInput() {
-        document.getElementById('quillEditor').value = quill.root.innerHTML;
-    }
-</script>

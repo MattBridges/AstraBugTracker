@@ -15,7 +15,6 @@
 <style>
     .amDark {
         background-color: #30303d;
-       
         color: #fff;
     }
 
@@ -27,13 +26,13 @@
 </style>
 
 
-<h1>Dashboard</h1>
+<h1 class="text-center">Dashboard</h1>
 <a href="javascript:void(0);">
     @* User Info *@
-    [Code: Copy from Ticket/Details]
+ @*   [Code: Copy from Ticket/Details]*@
 </a>
 @* Get The btUser FullName *@
-<strong>@user!.FullName</strong>
+@*<strong>@user!.FullName</strong>*@
 <span class="text-muted" style="font-size:x-small;">
     @* Company Name *@
     @*<strong>@user!.Company!.Name</strong>*@
@@ -45,11 +44,11 @@
         <!-- Info Pills -->
         <div class="row mt-2">
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <a asp-action="AllProjects" asp-controller="Projects" style="text-decoration:none">
+                <a asp-action="Index" asp-controller="Projects" style="text-decoration:none">
                     <div class="card text-center bg-info">
                         <div class="body">
                             <div class="p-15 text-light">
-                                <h3>@Model.Projects!.Count()</h3>
+                                <h3 style="color:white !important">@Model.Projects!.Count()</h3>
                                 <span>Active Projects</span>
                             </div>
                         </div>
@@ -57,12 +56,12 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
-                <a asp-action="AllTickets" asp-controller="Tickets" style="text-decoration:none">
+                <a asp-action="Index" asp-controller="Tickets" style="text-decoration:none">
                     <div class="card text-center bg-secondary ">
                         <div class="body">
                             <div class="p-15 text-light">
 
-                                <h3>@Model.Tickets!.Count()</h3>
+                                <h3 style="color:white !important">@Model.Tickets!.Count()</h3>
                                 <span>Total Tickets</span>
                             </div>
                         </div>
@@ -70,20 +69,22 @@
                 </a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
+                <a asp-action="UnassignedTickets" asp-controller="Tickets" style="text-decoration:none">
                 <div class="card text-center bg-warning">
                     <div class="body">
                         <div class="p-15 text-light">
-                            <h3>@Model.Tickets!.Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).Count()</h3>
+                            <h3 style="color:white !important">@Model.Tickets!.Where(t => string.IsNullOrEmpty(t.DeveloperUserId)).Count()</h3>
                             <span>Unassigned Tickets</span>
                         </div>
                     </div>
                 </div>
+                </a>
             </div>
             <div class="col-lg-3 col-md-6 col-sm-6">
                 <div class="card text-center bg-dark">
                     <div class="body">
-                        <div class="p-15 text-light">
-                            <h3>
+                        <div class="p-15 text-light" >
+                            <h3 style="color:white !important">
                                 @(
                                     Model.Projects!.Count()
                                     + Model.Tickets!.Count()
@@ -99,61 +100,61 @@
         <div class="row gy-2">
             <div class="col-md-12 col">
                 <div class="row col-cols-4 mt-5">
-                    
 
-                        <div class="card col m-1 p-2">
-                            <div class="card-body">
-                                <h5>Projects by Priority</h5>
-                                <p>[Google Charts]</p>
-                                <div id="chart3D"></div>
-                            </div>
-                        </div>
-                        <div class="card col m-1 p-2">
-                            <div class="card-body">
-                                <h5>Project Tickets Count (%)</h5>
-                                <p>[Google Charts]</p>
-                                <div id="donut"></div>
-                            </div>
-                        </div>
-                        <div class="card col m-1 p-2">
 
-                            <div class="card-body">
-                                <h5>Tickets by Priority</h5>
-                                <p>[Morris Charts]</p>
-                                <!-- Morris: Donut -->
-                                <div class="col-md-12">
-                                    <div id="legend" class="donut-legend" style="font-size:x-small"></div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="chart chart-md" id="morrisTicketPriority"></div>
-                                </div>
-                            </div>
+                    <div class="card col m-1 p-2">
+                        <div class="card-body">
+                            <h5>Projects by Priority</h5>
+                            <p>[Google Charts]</p>
+                            <div id="chart3D"></div>
                         </div>
-                        <div class="card col m-1 p-2">
+                    </div>
+                    <div class="card col m-1 p-2">
+                        <div class="card-body">
+                            <h5>Project Tickets Count (%)</h5>
+                            <p>[Google Charts]</p>
+                            <div id="donut"></div>
+                        </div>
+                    </div>
+                    <div class="card col m-1 p-2">
 
-                            <div class="card-body">
-                                <h5>Tickets by Status</h5>
-                                <p>[ChartJS]</p>
-                                <!-- ChartJS: Pie/Doughnut -->
-                                <div class="col-md-12">
-                                    <!--  Chart.js Canvas Tag -->
-                                    <canvas id="donutChart"></canvas>
-                                </div>
+                        <div class="card-body">
+                            <h5>Tickets by Priority</h5>
+                            <p>[Morris Charts]</p>
+                            <!-- Morris: Donut -->
+                            <div class="col-md-12">
+                                <div id="legend" class="donut-legend" style="font-size:x-small"></div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="chart chart-md" id="morrisTicketPriority"></div>
                             </div>
                         </div>
-                    
+                    </div>
+                    <div class="card col m-1 p-2">
+
+                        <div class="card-body">
+                            <h5>Tickets by Status</h5>
+                            <p>[ChartJS]</p>
+                            <!-- ChartJS: Pie/Doughnut -->
+                            <div class="col-md-12">
+                                <!--  Chart.js Canvas Tag -->
+                                <canvas id="donutChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
                 </div>
             </div>
             <div class="row gy-2">
                 <div class="cols mt-5 ">
                     <div class="card col m-1 p-2">
-                        
-                    <div class="card-body text-white" style="height:600px">
-	                    <h5>Project: Tickets vs Developers</h5>
-	                    <p >[amCharts]</p>
-	                    <!-- HTML -->
+
+                        <div class="card-body text-white" style="height:600px">
+                            <h5>Project: Tickets vs Developers</h5>
+                            <p>[amCharts]</p>
+                            <!-- HTML -->
                             <div class="text-white" id="chartdiv"></div>
-                    </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -162,21 +163,21 @@
         <div class="mt-5 ">
             <div class="row">
                 @* Projects Table *@
-@*                <div class="col">
-                    <div class="">
-                        <div class="card m-1 p-2">
-                            <div class="card-header">
-                                <h2>Projects</h2>
-                            </div>
-                            <div class="card-body">
-                                 [Copy and format table from Unassigned Tickets] 
-                                <partial name="_TicketTablePartial" model="@Model.Projects" />
+                @*                <div class="col">
+                <div class="">
+                <div class="card m-1 p-2">
+                <div class="card-header">
+                <h2>Projects</h2>
+                </div>
+                <div class="card-body">
+                [Copy and format table from Unassigned Tickets]
+                <partial name="_TicketTablePartial" model="@Model.Projects" />
 
-                            </div>
-                            <div class="card-footer">
-                            </div>
-                        </div>
-                    </div>
+                </div>
+                <div class="card-footer">
+                </div>
+                </div>
+                </div>
                 </div>*@
                 @* Tickets Table *@
                 <div class="col-9">
@@ -186,8 +187,6 @@
                                 <h2>Tickets</h2>
                             </div>
                             <div class="card-body">
-
-                                @* Copy and format table from Unassigned Tickets *@
                                 <partial name="_TicketTablePartial" model="@Model.Tickets" />
                             </div>
                             <div class="card-footer">
@@ -195,7 +194,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <div class="col-3 ">
                     <div class="">
                         <div class="card m-1 p-2">
@@ -204,137 +203,164 @@
                                 <hr />
                             </div>
                             <div class="card-body" style="overflow-y:auto;height:600px;background-color:antiquewhite">
-                                @* Looop over Company members. Display Name and Role *@
 
-                                @foreach(BTUser member in Model.Members!)
+                                @foreach (BTUser member in Model.Members!)
                                 {
-                                    string fullName = member.FullName;
                                     IEnumerable<string>? role = await _roleService.GetUserRolesAsync(member);
                                     <p class="text-dark">@member.FullName - @role.First()</p>
+
+
+
                                 }
                             </div>
+
+
                         </div>
                     </div>
-                </div>
                 
+                <!--Start Company Members-->
+@*                <div class="card col m-1 p-2" style="height: 500px; overflow-y:auto">
+                    <div class="card-body">
+                        <h4 class="header-title mt-0 mb-3 text-center">Members</h4>
+                        @foreach (BTUser member in Model.Members!)
+                        {
+                            IEnumerable<string>? userRole = await _roleService.GetUserRolesAsync(member);
+                            <ul class="list-group mb-0 user-list">
+                                <li class="list-group-item">
+                                    <a href="#" class="user-list-item">
+                                        <div class="user avatar-sm float-start me-2">
+                                            <img src="~/img/DefaultUserImage.png" alt="" class="img-fluid rounded-circle">
+                                        </div>
+                                        <div class="user-desc">
+                                            <h5 class="name mt-0 mb-1">@member.FullName</h5>
+                                            <p class="desc text-muted mb-0 font-12">@userRole.First()</p>
+                                        </div>
+                                    </a>
+                                </li>
+                            </ul>
+                        }
+                    </div>
+                </div>*@
+                </div>
+
             </div>
         </div>
     </div>
 
-    </div>
-    @section Scripts {
-       
-            <!--Google Charts-->
-            <script type="text/javascript" src="https://www.google.com/jsapi"></script>
+</div>
+@section Scripts {
 
-            <script type="text/javascript">
-                google.load("visualization", "1", { packages: ["corechart"] });
-                google.setOnLoadCallback(drawChart);
-                function drawChart() {
-                    $.ajax({
-                        type: "POST",
-                        url: "/Home/GglProjectPriority",
-                        data: '{}',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (result) {
-                            var data = google.visualization.arrayToDataTable(result);
+    <!--Google Charts-->
+    <script type="text/javascript" src="https://www.google.com/jsapi"></script>
 
-                            //3D Pie
-                            var options = {
-                                title: 'Project Priority',
-                                is3D: true,
-                                chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
-                                legend: { position: 'bottom' }
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["corechart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/GglProjectPriority",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var data = google.visualization.arrayToDataTable(result);
 
-                            };
+                    //3D Pie
+                    var options = {
+                        title: 'Project Priority',
+                        is3D: true,
+                        chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
+                        legend: { position: 'bottom' }
 
-                            var chart = new google.visualization.PieChart($("#chart3D")[0]);
-                            chart.draw(data, options);
-                        },
-                        failure: function (rresult) {
-                            alert(result.d);
-                        },
-                        error: function (result) {
-                            alert(result.d);
-                        }
-                    });
+                    };
+
+                    var chart = new google.visualization.PieChart($("#chart3D")[0]);
+                    chart.draw(data, options);
+                },
+                failure: function (rresult) {
+                    alert(result.d);
+                },
+                error: function (result) {
+                    alert(result.d);
                 }
-            </script>
-            <script type="text/javascript">
-                google.load("visualization", "1", { packages: ["corechart"] });
-                google.setOnLoadCallback(drawChart);
-                function drawChart() {
-                    $.ajax({
-                        type: "POST",
-                        url: "/Home/GglProjectPriority",
-                        data: '{}',
-                        contentType: "application/json; charset=utf-8",
-                        dataType: "json",
-                        success: function (result) {
-                            var data = google.visualization.arrayToDataTable(result);
-
-                            //Donut
-                            var options = {
-                                title: 'Company Ticket Distribution',
-                                pieHole: 0.3,
-                                chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
-                                legend: { position: 'bottom' }
-                            };
-                            var chart = new google.visualization.PieChart($("#donut")[0]);
-                            chart.draw(data, options);
-                        },
-                        failure: function (rresult) {
-                            alert(result.d);
-                        },
-                        error: function (result) {
-                            alert(result.d);
-                        }
-                    });
-                }
+            });
+        }
     </script>
-                @* Morris Donut Chart *@
-                    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js" ></script>
-            <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
-            <script>
+    <script type="text/javascript">
+        google.load("visualization", "1", { packages: ["corechart"] });
+        google.setOnLoadCallback(drawChart);
+        function drawChart() {
+            $.ajax({
+                type: "POST",
+                url: "/Home/GglProjectPriority",
+                data: '{}',
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                success: function (result) {
+                    var data = google.visualization.arrayToDataTable(result);
 
-                    var morrisDonutData = [{
-                    label: "Low",
-                    value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.Low)).Count()
-                    }, {
-                    label: "Medium",
-                    value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.Medium)).Count()
-                    }, {
-                    label: "High",
-                    value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.High)).Count()
-                    }, {
-                    label: "Urgent",
-                    value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.Urgent)).Count()
-                    }];
+                    //Donut
+                    var options = {
+                        title: 'Company Ticket Distribution',
+                        pieHole: 0.3,
+                        chartArea: { left: 0, bottom: 15, width: '100%', height: '100%' },
+                        legend: { position: 'bottom' }
+                    };
+                    var chart = new google.visualization.PieChart($("#donut")[0]);
+                    chart.draw(data, options);
+                },
+                failure: function (rresult) {
+                    alert(result.d);
+                },
+                error: function (result) {
+                    alert(result.d);
+                }
+            });
+        }
+    </script>
+    @* Morris Donut Chart *@
+    <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+    <script>
+
+        var morrisDonutData = [{
+            label: "Low",
+            value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.Low)).Count()
+                                    }, {
+            label: "Medium",
+            value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.Medium)).Count()
+                                    }, {
+            label: "High",
+            value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.High)).Count()
+                                    }, {
+            label: "Urgent",
+            value: @Model.Tickets!.Where(t=>t.TicketPriority!.Name == nameof(BTTicketPriorities.Urgent)).Count()
+                                    }];
 
 
-                /*
-                Morris: Donut
-                */
-                if ($('#morrisTicketPriority').get(0)) {
-                    var donutChart = Morris.Donut({
-                        resize: true,
-                        element: 'morrisTicketPriority',
-                        data: morrisDonutData,
-                        colors: ['#0088cc', '#734ba9', '#E36159', '#ff993b']
-                    });
+        /*
+        Morris: Donut
+        */
+        if ($('#morrisTicketPriority').get(0)) {
+            var donutChart = Morris.Donut({
+                resize: true,
+                element: 'morrisTicketPriority',
+                data: morrisDonutData,
+                colors: ['#0088cc', '#734ba9', '#E36159', '#ff993b']
+            });
 
-                    donutChart.options.data.forEach(function (label, i) {
-                        var legendItem = $('<span></span>').text(label['label'] + ": " + label['value']).prepend('<span>&nbsp;</span>');
-                        legendItem.find('span')
-                            .css('backgroundColor', donutChart.options.colors[i])
-                            .css('width', '20px')
-                            .css('display', 'inline-block')
-                            .css('margin', '10px');
-                        $('#legend').append(legendItem)
-                    });
-                };
-            </script>
+            donutChart.options.data.forEach(function (label, i) {
+                var legendItem = $('<span></span>').text(label['label'] + ": " + label['value']).prepend('<span>&nbsp;</span>');
+                legendItem.find('span')
+                    .css('backgroundColor', donutChart.options.colors[i])
+                    .css('width', '20px')
+                    .css('display', 'inline-block')
+                    .css('margin', '10px');
+                $('#legend').append(legendItem)
+            });
+        };
+    </script>
 
     <!-- *** Begin Chart JS Pie/Donut *** -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.6.0/dist/chart.min.js"></script>
@@ -355,7 +381,7 @@
         @Model.Tickets!.Where(t=> t.TicketStatus!.Name ==nameof(BTTicketStatuses.New)).Count(),
         @Model.Tickets!.Where(t=> t.TicketStatus!.Name ==nameof(BTTicketStatuses.Resolved)).Count(),
         @Model.Tickets!.Where(t=> t.TicketStatus!.Name ==nameof(BTTicketStatuses.Testing)).Count()
-                        ],
+                                        ],
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)',
@@ -466,6 +492,5 @@
     </script>
 
     <!-- *** End AM Charts *** -->
-
         }
-    
+

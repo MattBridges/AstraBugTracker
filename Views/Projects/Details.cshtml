@@ -80,13 +80,14 @@
                             </div>
                     <hr />
                 </div>
+              
                 <div class="body" style="overflow-y:auto;height:300px;">
                     <div class="col-12 text-center">
-                        <img class="rounded-circle" style="height:250px;" src="@_FileService.ConvertByteArrayToFile(projectManager.ImageFileData!, projectManager.ImageFileType!,(int)DefaultImage.BTUserImage)" />
+                        <img class="rounded-circle" style="height:250px;" src="@_FileService.ConvertByteArrayToFile(projectManager?.ImageFileData!, projectManager?.ImageFileType!,(int)DefaultImage.BTUserImage)" />
                     </div>
 
                     <div class="col-12 text-center mt-2">
-                        <h2>@projectManager.FullName</h2>
+                        <h2>@projectManager?.FullName</h2>
                     </div>
 
 
@@ -160,6 +161,7 @@
                             </thead>
                             <tbody>
                                 @* Table body *@
+                                @*<partial name="_TicketTablePartial" model="@Model.Tickets" />*@
                                 @foreach (Ticket ticket in Model.Tickets)
                                 {
                                     <tr>

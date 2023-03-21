@@ -42,7 +42,7 @@
                                     {
                                         <a asp-action="Delete" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="delete"></i><span>Unarchive Project</span></a>
                                     }
-
+                                    <a role="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="updateModal(@Model.Id)">Delete</a>
                                 </div>
                             </div>
                         </h4>
@@ -92,6 +92,8 @@
         </div>
     </div>
 </div>
+
+
 
 
 

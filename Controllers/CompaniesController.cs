@@ -128,12 +128,12 @@ namespace AstraBugTracker.Controllers
         // GET: Companies/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Companies == null)
-            {
-                return NotFound();
-            }
-
-            var company = await _context.Companies.FindAsync(id);
+            //if (id == null || _context.Companies == null)
+            //{
+            //    return NotFound();
+            //}
+            int? companyId = User.Identity!.GetCompanyId();
+            var company = await _context.Companies.FindAsync(companyId);
             if (company == null)
             {
                 return NotFound();

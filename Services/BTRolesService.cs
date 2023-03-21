@@ -1,5 +1,6 @@
 ﻿using AstraBugTracker.Data;
 using AstraBugTracker.Models;
+using AstraBugTracker.Models.Enums;
 using AstraBugTracker.Services.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -67,8 +68,22 @@ namespace AstraBugTracker.Services
             {
                 List<BTUser> result = new();
                 List<BTUser> users = new();
+          
+
                 users = (await _userManager.GetUsersInRoleAsync(roleName)).ToList();
                 result= users.Where(u=>u.CompanyId == companyId).ToList();
+                //Add Admins to PM List
+                if (roleName == nameof(BTRoles.ProjectManager))
+                {
+                    List<BTUser> admins = (await _userManager.GetUsersInRoleAsync(nameof(BTRoles.Admin))).ToList();
+                    foreach (BTUser admin in admins)
+                    {
+                        if(admin.CompanyId == companyId)
+                        {
+                            result.Add(admin);
+                        }
+                    }
+                }
 
                 return result;
             }
