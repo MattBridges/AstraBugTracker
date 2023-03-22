@@ -19,7 +19,7 @@
         <div class="col-md-12 col">
             <div class="row col-cols-2 my-2 ">
                 @*Base Details*@
-                <div class="card col mx-2 p-2">
+                <div class="card col mx-2 p-2" style="height: 260px; overflow-y:auto">
                     <div class="card-body">
                         @*Title of Ticket*@
                         <h5>@Model.Title</h5>
@@ -39,7 +39,7 @@
                     </div>
                 </div>
                 @*Current Statuses*@
-                <div class="card col mx-2 p-2">
+                <div class="card col mx-2 p-2 style=" height: 260px; overflow-y:auto"">
                     <div class="card-body">
                         <ul class="list-unstyled">
                             <li><strong>Assigned To:</strong> <span class="">@assignedDev.FullName</span></li>
@@ -67,7 +67,7 @@
                     <div class="">
                         <div class="card p-2">
                             <div class="card-header">
-                                <h2>Comments</h2>
+                                <h2>Comments:</h2>
                             </div>
                             <div class="card-body" style="overflow-y:auto;height:600px;">
                                 <form asp-action="AddTicketComment" asp-route-id="@Model.Id">
@@ -78,12 +78,15 @@
                                 @*Form and Logic for authorized users to add comments*@
                                 <hr />
                                 <h6>Comments</h6>
-                                <ul class="right_chat list-unstyled mb-0">
+                                <ul class="right_chat list-unstyled mb-0" style="overflow-y:auto">
                                     @*Loop to show comments made for the Ticket*@
-                                    @foreach (TicketComment comment in ViewBag.Comments)
+                                    @foreach (TicketComment comment in Model.Comments)
                                     {
-                                        <p></p>
-                                        <p>@comment.Created: @comment.User!.FullName - @comment.Comment</p>
+                                        <li class="pb-4">
+                                            <strong class="text-primary">@comment.Created: @comment.User?.FullName</strong>
+                                            <p class="lh-sm">@comment.Comment</p>
+                                        </li>
+                                   
                                     }
                                 </ul>
                             </div>
@@ -114,9 +117,9 @@
                                                     <input asp-for="@Model.Attachments.FirstOrDefault()!.Description" type="text" placeholder="File Description" class="form-control" />
                                                 </label>
                                                 <label class="btn btn-outline-primary btn-sm">
-                                                    <input asp-for="@Model.Attachments.FirstOrDefault()!.FormFile" type="file" class="form-control-file" />
+                                                    <input asp-for="@Model.Attachments.FirstOrDefault()!.FormFile" type="file" class="form-control-file text-primary" />
                                                 </label>
-                                                <button type="submit" class="btn btn-outline-secondary btn-sm md-btn-flat">Submit</button>
+                                                <button type="submit" class="btn btn-outline-primary btn-sm md-btn-flat">Submit</button>
                                             </div>
                                         </form>
                                     </div>
@@ -161,11 +164,11 @@
                             <h2>History</h2>
                             <hr />
                         </div>
-                        <div class="card-body" style="overflow-y:auto;height:1015px;background-color:antiquewhite">
+                        <div class="card-body" style="overflow-y:auto;height:1015px;background-color:white">
                             @*Loop to show the history entries for the Ticket*@
                             @foreach(TicketHistory history in Model.History)
                             {
-                                <span>@history.Created</span>
+                                <span class="text-primary">@history.Created</span>
                                 <br />
                                 <span>@history.Description</span>                         
                                 <br/>

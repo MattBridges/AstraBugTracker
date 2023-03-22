@@ -33,7 +33,9 @@ namespace AstraBugTracker.Services
         {
             try
             {
-                return await _context.TicketComment.Where(t => t.TicketId == id).ToListAsync();
+                return await _context.TicketComment.Where(t => t.TicketId == id)
+                                                   .Include(t=>t.User)
+                                                   .ToListAsync();
             }
             catch (Exception)
             {
