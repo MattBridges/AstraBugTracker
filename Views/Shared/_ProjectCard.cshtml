@@ -19,7 +19,22 @@
             <div class="m-o-dropdown-list">
                 <div class="media mt-0 mb-3">
                     <div class="badge--group me-3">
-                        <div class="badge badge-success badge-dot"></div>
+                        @if(Model.ProjectPriority.Name == nameof(BTProjectPriorities.Low))
+                        {
+                          <div class="badge badge-primary badge-dot"></div>                            
+                        }
+                        @if (Model.ProjectPriority.Name == nameof(BTProjectPriorities.Medium))
+                        {
+                            <div class="badge badge-success badge-dot"></div>
+                        }
+                         @if(Model.ProjectPriority.Name == nameof(BTProjectPriorities.High))
+                        {
+                          <div class="badge badge-warning badge-dot"></div>                            
+                        }
+                         @if(Model.ProjectPriority.Name == nameof(BTProjectPriorities.Urgent))
+                        {
+                          <div class="badge badge-danger badge-dot"></div>                            
+                        }
                     </div>
                     <div class="media-body">
                         <h4 class="media-heading mb-0">
@@ -42,7 +57,6 @@
                                     {
                                         <a asp-action="Delete" asp-route-id="@Model.Id" class="dropdown-item"><i data-feather="delete"></i><span>Unarchive Project</span></a>
                                     }
-                                    <a role="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" onclick="updateModal(@Model.Id)">Delete</a>
                                 </div>
                             </div>
                         </h4>
@@ -51,11 +65,22 @@
 
             </div>
 
-            <p class="card-text mt-4 mb-0">@Model.Description</p>
+            @*<p class="card-text mt-4 mb-0">@Model.Description</p>*@
+            <textarea rows="5" cols="38" style="resize:none; border:none;">@Model.Description</textarea>
         </div>
         <div class="card-footer pt-0 border-0">
-            <div class="progress br-30 progress-sm">
-                <div class="progress-bar bg-info" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
+            <div class="progress">
+                @* Razor code block *@
+                @{
+                    var start = Model.StartDate;
+                    var end = Model.EndDate;
+                    var today = DateTime.Now;
+                    var percent = today >= end ? 100 : today < start ? 0 : Math.Round((today.Subtract(start)) / (end.Subtract(start)) * 100);
+                }
+                <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @percent%;">
+                    @* Use Progress Bar code variable here *@
+                    <span class="progress-value">@percent%</span>
+                </div>
             </div>
 
                 <div class="row">

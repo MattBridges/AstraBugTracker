@@ -32,11 +32,15 @@
                         <span class="progress-badge" style="font-size:small">Project Status</span>
                         <div class="progress">
                             @* Razor code block *@
-                            [Progress Bar code]
-                            @*<div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @percent%;">*@
-                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 25%;">
+                            @{
+                                var start = Model.StartDate;
+                                var end = Model.EndDate;
+                                var today = DateTime.Now;
+                                var percent = today >= end ? 100 : today < start ? 0 : Math.Round((today.Subtract(start)) / (end.Subtract(start)) * 100);
+                            }
+                            <div class="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: @percent%;">
                                 @* Use Progress Bar code variable here *@
-                                <span class="progress-value">75%</span>
+                                <span class="progress-value">@percent%</span>
                             </div>
                         </div>
                     </div>
@@ -49,8 +53,8 @@
             <div class="card m-1 p-2">
                 <div class="body">
                     <ul class=" list-unstyled basic-list">
-                        <li>Start Date: <span class="">@Model.StartDate</span></li>
-                        <li>Deadline: <span class="">@Model.EndDate</span></li>
+                        <li>Start Date: <span class="">@Model.StartDate.ToString("MM-dd-yyyy")</span></li>
+                        <li>Deadline: <span class="">@Model.EndDate.ToString("MM-dd-yyyy")</span></li>
                         <li>Priority: <span class="">@Model.ProjectPriority!.Name</span></li>
                         @* if() logic *@
                         @if (!@Model.Archived)
@@ -67,8 +71,8 @@
         </div>
     </div>
     @*Project Manager*@
-    <div class="col-md-4 col mt-4 ">
-        <div class="">
+    <div class="col-md-4 col mt-4" >
+        <div class="" style=" overflow-y:auto;height:425px;">
             <div class="card m-1 p-2">
                 <div class="header">
                     <h2>Project Manager</h2>
@@ -87,9 +91,9 @@
                     <hr />
                 </div>
               
-                <div class="body" style="overflow-y:auto;height:300px;">
+                <div class="body" style="overflow-y:auto;height:269px;">
                     <div class="col-12 text-center">
-                        <img class="rounded-circle" style="height:250px;" src="@_FileService.ConvertByteArrayToFile(projectManager?.ImageFileData!, projectManager?.ImageFileType!,(int)DefaultImage.BTUserImage)" />
+                        <img class="rounded-circle" style="height:200px;" src="@_FileService.ConvertByteArrayToFile(projectManager?.ImageFileData!, projectManager?.ImageFileType!,(int)DefaultImage.BTUserImage)" />
                     </div>
 
                     <div class="col-12 text-center mt-2">
