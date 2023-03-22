@@ -161,15 +161,15 @@ namespace AstraBugTracker.Controllers
         // GET: Tickets/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            Ticket ticket = await _ticketService.GetTicketAsync(id);
-
-            IEnumerable<TicketComment> comments = await _ticketCommentService.GetTicketCommentsAsync(ticket.Id);
-            ViewData["Comments"] = comments;
+            int? companyId= User.Identity!.GetCompanyId();
+            Ticket ticket = await _ticketService.GetTicketAsync(id, companyId);
             if (ticket == null)
             {
                 return NotFound();
             }
 
+            IEnumerable<TicketComment> comments = await _ticketCommentService.GetTicketCommentsAsync(ticket.Id);
+           
             return View(ticket);
         }
 		[HttpPost]

@@ -231,6 +231,31 @@ namespace AstraBugTracker.Services
             }
         }
 
+        public async Task<Ticket> GetTicketAsync(int? id, int? companyId)
+        {
+            try
+            {
+                Ticket? ticket = await _context.Tickets
+               .Include(t => t.DeveloperUser)
+               .Include(t => t.Project)
+               .Include(t => t.SubmitterUser)
+               .Include(t => t.TicketPriority)
+               .Include(t => t.TicketStatus)
+               .Include(t => t.TicketType)
+               .Include(t => t.Attachments)
+               .Include(t => t.History)
+               .FirstOrDefaultAsync(m => m.Id == id && m.Project!.CompanyId == companyId);
+
+                return ticket!;
+            }
+
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
         public async Task AddTicketAsync(Ticket ticket)
         {
             try

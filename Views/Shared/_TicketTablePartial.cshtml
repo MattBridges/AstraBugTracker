@@ -22,7 +22,7 @@
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td class="text-center">  <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a></td>
+                        <td class="text-center">  <a asp-action="Details" asp-controller="Tickets" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Details</a></td>
                         <td class="text-center"> @Html.DisplayFor(modelItem => item.Title)</td>
                         <td>
                             @if (item.DeveloperUser != null)
@@ -39,46 +39,46 @@
                         </td>
                         <td>@Html.DisplayFor(modelItem => item.Created)</td>
                         <td>
-                            @if (item.TicketType!.Name == nameof(BTTicketTypes.WorkTask))
+                            @if (item.TicketType?.Name == nameof(BTTicketTypes.WorkTask))
                             {
                                 <span class="shadow-none badge badge-secondary">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
                             }
-                            @if (item.TicketType!.Name == nameof(BTTicketTypes.GeneralTask))
+                            @if (item.TicketType?.Name == nameof(BTTicketTypes.GeneralTask))
                             {
                                 <span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
                             }
-                            @if (item.TicketType!.Name == nameof(BTTicketTypes.Defect))
+                            @if (item.TicketType?.Name == nameof(BTTicketTypes.Defect))
                             {
                                 <span class="shadow-none badge badge-danger">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
                             }
-                            @if (item.TicketType!.Name == nameof(BTTicketTypes.Enhancement))
+                            @if (item.TicketType?.Name == nameof(BTTicketTypes.Enhancement))
                             {
                                 <span class="shadow-none badge badge-dark">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
                             }
-                            @if (item.TicketType!.Name == nameof(BTTicketTypes.NewDevelopment))
+                            @if (item.TicketType?.Name == nameof(BTTicketTypes.NewDevelopment))
                             {
                                 <span class="shadow-none badge badge-info">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
                             }
-                            @if (item.TicketType!.Name == nameof(BTTicketTypes.ChangeRequest))
+                            @if (item.TicketType?.Name == nameof(BTTicketTypes.ChangeRequest))
                             {
                                 <span class="shadow-none badge badge-warning">@Html.DisplayFor(modelItem => item.TicketType!.Name)</span>
                             }
                         </td>
 
                         <td>
-                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Urgent))
+                            @if (item.TicketPriority?.Name == nameof(BTTicketPriorities.Urgent))
                             {
                                 <span class="shadow-none badge badge-danger">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
                             }
-                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.High))
+                            @if (item.TicketPriority?.Name == nameof(BTTicketPriorities.High))
                             {
                                 <span class="shadow-none badge badge-warning">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
                             }
-                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Medium))
+                            @if (item.TicketPriority?.Name == nameof(BTTicketPriorities.Medium))
                             {
                                 <span class="shadow-none badge badge-secondary">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
                             }
-                            @if (item.TicketPriority!.Name == nameof(BTTicketPriorities.Low))
+                            @if (item.TicketPriority?.Name == nameof(BTTicketPriorities.Low))
                             {
                                 <span class="shadow-none badge badge-primary">@Html.DisplayFor(modelItem => item.TicketPriority!.Name)</span>
                             }

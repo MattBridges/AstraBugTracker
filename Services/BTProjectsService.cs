@@ -200,9 +200,15 @@ namespace AstraBugTracker.Services
                                        .Include(p => p.Members)
                                        .Include(p => p.ProjectPriority)
                                        .Include(p => p.Tickets)
+                                           .ThenInclude(t => t.TicketPriority)
+                                        .Include(p => p.Tickets)
+                                           .ThenInclude(t => t.TicketType)
+                                       .Include(p => p.Tickets)
                                            .ThenInclude(t => t.DeveloperUser)
                                        .Include(p => p.Tickets)
                                            .ThenInclude(t => t.SubmitterUser)
+                                        .Include(p=>p.Tickets)
+                                            .ThenInclude(t=>t.History)
                                        .FirstOrDefaultAsync(m => m.Id == projectId);
 
                 return project!;

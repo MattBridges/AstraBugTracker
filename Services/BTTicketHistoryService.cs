@@ -7,10 +7,12 @@ namespace AstraBugTracker.Services
     public class BTTicketHistoryService : IBTTicketHistoryService
     {
         private readonly ApplicationDbContext _context;
+        private readonly IBTProjectsService _projectService;
 
-        public BTTicketHistoryService(ApplicationDbContext context)
+        public BTTicketHistoryService(ApplicationDbContext context,IBTProjectsService projectsService)
         {
             _context = context;
+            _projectService = projectsService;
         }
 
         public async Task AddHistoryAsync(Ticket oldTicket, Ticket newTicket, string userId)
@@ -197,7 +199,7 @@ namespace AstraBugTracker.Services
             }
         }
 
-        public Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int? projectId, int? companyId)
+        public async Task<List<TicketHistory>> GetProjectTicketsHistoriesAsync(int? projectId, int? companyId)
         {
             throw new NotImplementedException();
         }

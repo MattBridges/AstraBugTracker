@@ -22,6 +22,8 @@ namespace AstraBugTracker.Services.Interfaces
 
         public Task<Ticket> GetTicketAsync(int? id);
 
+        public Task<Ticket> GetTicketAsync(int? id, int? companyId);
+
         public Task AddTicketAsync(Ticket ticket);
 
         public Task UpdateTicketAsync(Ticket ticket);

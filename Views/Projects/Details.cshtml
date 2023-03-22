@@ -4,12 +4,18 @@
 
 @inject IBTFileService _FileService;
 @inject IBTProjectsService _ProjectService;
+@inject IBTTicketService _TicketService;
+@inject IBTTicketHistoryService _TicketHistoryService;
 
 
 @{
     ViewData["Title"] = "Details";
     BTUser? projectManager = await _ProjectService.GetProjectManagerAsync(Model.Id);
-}
+
+
+    
+
+ }
 
 
 <div class="row">
@@ -133,9 +139,19 @@
                     <h2>Project Activity</h2>
                     <hr />
                 </div>
-                <div class="body" style="overflow-y:auto;height:300px;background-color:antiquewhite">
+                <div class="body" style="overflow-y:auto;height:300px;background-color:white">
                     @* Project Activity loop *@
-                    [Project Activity  e.g. Ticket History]
+                    @foreach(Ticket ticket in Model.Tickets)
+                    {
+                         @foreach(TicketHistory history in ticket.History)
+                            {
+                                <span class="text-primary">@history.Created</span>
+                                <br />
+                                <span>@history.Description</span>                         
+                                <br/>
+                                <br />
+                            }
+                    }
                 </div>
 
             </div>
@@ -161,8 +177,8 @@
                             </thead>
                             <tbody>
                                 @* Table body *@
-                                @*<partial name="_TicketTablePartial" model="@Model.Tickets" />*@
-                                @foreach (Ticket ticket in Model.Tickets)
+                                <partial name="_TicketTablePartial" model="@Model.Tickets" />
+                      @*          @foreach (Ticket ticket in Model.Tickets)
                                 {
                                     <tr>
                                         <td>
@@ -175,7 +191,7 @@
                                             @ticket.DeveloperUserId
                                         </td>
                                     </tr>
-                                }
+                                }*@
                             </tbody>
                         </table>
                     </div>
