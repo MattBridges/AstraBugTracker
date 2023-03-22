@@ -73,7 +73,7 @@
     <!-- END PAGE LEVEL PLUGINS/CUSTOM STYLES -->
     <link href="~/css/site.css" rel="stylesheet" type="text/css" />
 </head>
-<body class="layout-boxed">
+<body class="layout-boxed light-mode">
     <partial name="_LogoutPartial" />
     <!-- BEGIN LOADER -->
     <div id="load_screen">
@@ -274,7 +274,7 @@
                 <div class="navbar-nav theme-brand flex-row text-center">
                     <div class="nav-item theme-logo">
                         <a asp-action="Index" asp-controller="Home" class="nav-link">
-                            <img src="~/img/in-tracker-high-resolution-logo-color-on-transparent-background.png" style="height:30px; width:100%;" alt="logo">
+                            <img src="~/img/in-tracker-high-resolution-logo-color-on-transparent-background-new.png" style="height:35px; width:100%;" alt="logo">
                         </a>
                     </div>
 
@@ -469,5 +469,8 @@
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+    <script>
+        ForceLightMode();
+    </script>
 </body>
 </html>

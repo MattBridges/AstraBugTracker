@@ -3,3 +3,8 @@
 
 // Write your JavaScript code.
 feather.replace();
+ForceLightMode();
+
+function ForceLightMode(){
+	document.body.classList.remove('dark');
+}

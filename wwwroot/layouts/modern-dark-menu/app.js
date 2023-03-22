@@ -185,6 +185,7 @@ var App = function() {
                 
                 var getLocalStorage = localStorage.getItem("theme");
                 var parseObj = JSON.parse(getLocalStorage);
+               /* parseObj.settings.layout.darkMode = false;*/
 
                 if (parseObj.settings.layout.darkMode) {
 
