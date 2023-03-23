@@ -148,7 +148,7 @@ namespace AstraBugTracker.Services
         {
             try
             {
-                IEnumerable<Ticket> tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == companyId && t.Archived == false && t.TicketStatus!.Name != nameof(BTTicketStatuses.Resolved))
+                IEnumerable<Ticket> tickets = await _context.Tickets.Where(t => t.Project!.CompanyId == companyId&&t.Project!.Archived==false && t.Archived == false && t.TicketStatus!.Name != nameof(BTTicketStatuses.Resolved))
                                              .Include(t => t.TicketType)
                                              .Include(t => t.DeveloperUser)
                                              .Include(t => t.TicketPriority)
