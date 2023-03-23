@@ -30,7 +30,7 @@
 
 </head>
 
-<body class="abt-bg-light">
+<body class="abt-bg-light" style="background-color:#fff !important">
 
     <!-- ***** Preloader Start ***** -->
     <div id="preloader">
@@ -42,7 +42,7 @@
     </div>
     <!-- ***** Preloader End ***** -->
     <!-- ***** Header Area Start ***** -->
-    <header class="header-area abt-bg-dark">
+    <header class="header-area abt-bg-light">
         <div class="container ">
             <div class="row">
                 <div class="col-12">
@@ -52,25 +52,7 @@
                         <!-- ***** Logo End ***** -->
                         <!-- ***** Menu Start ***** -->
                         <ul class="nav">
-                 @*           <li class="scroll-to-section"><a href="#welcome" class="active">Home</a></li>
-                            <li class="scroll-to-section"><a href="#about">About</a></li>
-                            <li class="scroll-to-section"><a href="#services">Services</a></li>
-                            <li class="scroll-to-section">
-                                <a href="#frequently-question">Frequently Questions</a>
-                            </li>
-                            <li class="submenu">
-                                <a href="javascript:;">Drop Down</a>
-                                <ul>
-                                    <li><a href="">About Us</a></li>
-                                    <li><a href="">Features</a></li>
-                                    <li><a href="">FAQ's</a></li>
-                                    <li><a href="">Blog</a></li>
-                                </ul>
-                            </li>*@
-                            <li class="scroll-to-section"><a href="#contact-us">Contact Us</a></li>
-                           <li>
-
-                            </li>
+                
                             <a asp-area="Identity" asp-page="/Account/Login" class="btn btn-primary">Login Now</a>
                         </ul>
                         <a class='menu-trigger'>
@@ -92,15 +74,18 @@
                 <div class="row">
                     <div class="left-text col-lg-6 col-md-6 col-sm-12 col-xs-12"
                          data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
-                        <h1>In_Tracker is<strong></br> For YOU</strong></h1>
+                        <h1 class="text-center" style="line-height:.9 !important;">Dont let your teams productivity grind to a hault!</h1>
                         <p class="abt-text-light">
-                            Dont let growth slow you down! Manage all of your company projects and teams in one place.  
+                             Manage all of your company projects and teams in one place.  
                         </p>
-                        <a href="#about" class="main-button-slider">Try it now</a>
+                        <div class="w-100">
+
+                        <a asp-area="Identity" asp-page="/Account/Login" class="main-button-slider w-50 mx-auto text-center">Try it now</a>
+                        </div>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12"
                          data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
-                        <img src="~/assets/images/slider-icon.png" class="rounded img-fluid d-block mx-auto"
+                        <img src="/img/gears-1059756_1280.png" class="rounded img-fluid d-block mx-auto"
                              alt="First Vector Graphic">
                     </div>
                 </div>
@@ -110,8 +95,8 @@
     </div>
     <!-- ***** Welcome Area End ***** -->
     <!-- ***** Features Big Item Start ***** -->
-    <section class="section" id="about">
-        <div class="container">
+    <section class="section" id="about" style="border:none;">
+        <div class="container ">
             <div class="row">
                 <div class="col-lg-7 col-md-12 col-sm-12"
                      data-scroll-reveal="enter left move 30px over 0.6s after 0.4s">
@@ -119,18 +104,43 @@
                 </div>
                 <div class="right-text col-lg-5 col-md-12 col-sm-12 mobile-top-fix">
                     <div class="left-heading">
-                        <h5>Vivamus sodales nisi id ante molestie venenatis</h5>
+                        <h5 class="text-primary">Easily Manage Projects</h5>
                     </div>
                     <div class="left-text">
                         <p>
-                            This template is <a href="#">last updated on 20 August 2019 </a>for main menu drop-down
-                            arrow and sub menu text color. Duis auctor dolor eu scelerisque vestibulum. Vestibulum
-                            lacinia, nisl sit amet tristique condimentum. <br><br>
-                            Sed a consequat velit. Morbi lectus sapien, vestibulum et sapien sit amet, ultrices
-                            malesuada odio. Donec non quam euismod, mattis dui a, ultrices nisi.
+                            In_Tracker allows you to create a project, and assign members of your team to different roles allowing you to effectivly manage every aspect of the project from start to finish.
                         </p>
-                        <a href="#about2" class="main-button">Discover More</a>
+                        <a asp-area="Identity" asp-page="/Account/Login" class="main-button">Try Now!</a>
                     </div>
+                </div>
+            </div>
+   
+        </div>
+    </section>
+    <!-- ***** Features Big Item End ***** -->
+
+    <!-- ***** Contact Us Start ***** -->
+    <section class="section py-5" style="background-color:var(--abt-color-dark);">
+        <div class="container py-5">
+            <div class="row">
+          
+                <div class="right-text col-lg-5 col-md-12 col-sm-12 mobile-top-fix">
+                    <div class="py-4">
+                        <h3><strong>Create, Assign, and Track</strong> all your teams tasks from start to completion!</h3>
+                    </div>
+                    <div class="left-text">
+                        <p>
+                            Our tickets give you and your project managers the power to distribute each of your teams tasks and track their process.  Team members can view and comment on all tickets, making communication faster than ever. 
+                        </p>
+                    </div>
+                    <div class="py-5">
+                        <a asp-area="Identity" asp-page="/Account/Login" class="main-button mt-3">Try Now!</a>
+
+                    </div>
+                </div>
+                <div class="col-lg-7 col-md-12 col-sm-12"
+                     data-scroll-reveal="enter right move 30px over 0.6s after 0.4s">
+                    <img src="~/img/agenda-153555_1280.png" class="rounded img-fluid d-block mx-auto" alt="App">
                 </div>
             </div>
             <div class="row">
@@ -140,70 +150,21 @@
             </div>
         </div>
     </section>
-    <!-- ***** Features Big Item End ***** -->
-
-    <!-- ***** Contact Us Start ***** -->
-    <section class="section" id="contact-us">
-        <div class="container-fluid">
-            <div class="row">
-                <!-- ***** Contact Map Start ***** -->
-                <!-- ***** Contact Map End ***** -->
-                <!-- ***** Contact Form Start ***** -->
-                <div class="col-sm-12">
-                    <div class="contact-form" style="padding-top:50px !important;">
-           <h1 class="text-center abt-text-light pb-3">Contact Us</h1>
-                        <form id="contact" action="" method="post">
-                            <div class="row">
-                                <div class="col-md-6 col-sm-12">
-                                    <fieldset>
-                                        <input name="name" type="text" id="name" placeholder="Full Name" required=""
-                                               class="contact-field">
-                                    </fieldset>
-                                </div>
-                                <div class="col-md-6 col-sm-12">
-                                    <fieldset>
-                                        <input name="email" type="text" id="email" placeholder="E-mail" required=""
-                                               class="contact-field">
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <textarea name="message" rows="6" id="message" placeholder="Your Message"
-                                                  required="" class="contact-field"></textarea>
-                                    </fieldset>
-                                </div>
-                                <div class="col-lg-12">
-                                    <fieldset>
-                                        <button type="submit" id="form-submit" class="main-button">Send It</button>
-                                    </fieldset>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- ***** Contact Form End ***** -->
-            </div>
-        </div>
-    </section>
     <!-- ***** Contact Us End ***** -->
+
     <!-- ***** Footer Start ***** -->
     <footer>
         <div class="container">
             <div class="row">
                 <div class="col-lg-7 col-md-12 col-sm-12">
                     <p class="copyright">
-                        Copyright &copy; 2020 Art Factory Company
-
-                        . Design: <a rel="nofollow" href="https://templatemo.com">TemplateMo</a>
+                        Copyright &copy; 2023 Matt Bridges
                     </p>
                 </div>
                 <div class="col-lg-5 col-md-12 col-sm-12">
                     <ul class="social">
-                        <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                         <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                         <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
-                        <li><a href="#"><i class="fa fa-rss"></i></a></li>
-                        <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
                     </ul>
                 </div>
             </div>
