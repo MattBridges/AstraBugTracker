@@ -306,9 +306,9 @@ namespace AstraBugTracker.Controllers
         // GET: Tickets/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            
+            int? userCompanyId = User.Identity!.GetCompanyId();
        
-            Ticket ticket = await _ticketService.GetTicketAsync(id);
+            Ticket ticket = await _ticketService.GetTicketAsync(id,userCompanyId);
                 
             if (ticket == null)
             {
