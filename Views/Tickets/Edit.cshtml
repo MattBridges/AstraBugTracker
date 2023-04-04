@@ -47,33 +47,31 @@
                 </div>
                 @*Side Bar*@
                 <div class="col-xxl-3 col-xl-12 col-lg-12 col-md-12 col-sm-12 mt-xxl-0 mt-4">
-                    <div class="widget-content widget-content-area blog-create-section">
-                        <div class="row">
-                            @*TODO:make this a select list*@
-                           
-                            <div class="form-group">
+                    <div class="widget-content widget-content-area blog-create-section p-3">
+                        <div class="row">                           
+                    @*        <div class="form-group">
                                 <label asp-for="ProjectId" class="control-label">Project</label>
                                 <select asp-for="ProjectId" class="form-control" asp-items="ViewBag.ProjectId"></select>
-                            </div>
+                            </div>*@
                             <div class="form-group">
-                                <label asp-for="TicketTypeId" class="control-label"></label>
+                                <label asp-for="TicketTypeId" class="control-label pt-2 ">Ticket Type</label>
                                 <select asp-for="TicketTypeId" class="form-control" asp-items="ViewBag.TicketTypeId"></select>
                             </div>
                             <div class="form-group">
-                                <label asp-for="TicketStatusId" class="control-label"></label>
+                                <label asp-for="TicketStatusId" class="control-label pt-2">Ticket Status</label>
                                 <select asp-for="TicketStatusId" class="form-control" asp-items="ViewBag.TicketStatusId"></select>
                             </div>
                             <div class="form-group">
-                                <label asp-for="TicketPriorityId" class="control-label"></label>
+                                <label asp-for="TicketPriorityId" class="control-label pt-2">Ticket Priority</label>
                                 <select asp-for="TicketPriorityId" class="form-control" asp-items="ViewBag.TicketPriorityId"></select>
                             </div>
                             <div class="form-group">
-                                <label asp-for="DeveloperUserId" class="control-label">Assigned Developer</label>
+                                <label asp-for="DeveloperUserId" class="control-label pt-2">Assigned Developer</label>
                                 <select asp-for="DeveloperUserId" class="form-control" asp-items="ViewBag.DeveloperUserId"></select>
                             </div>
 
 
-                            <div class="col-xxl-12 col-sm-4 col-12 mx-auto">
+                            <div class="col-xxl-12 col-sm-4 col-12 mx-auto mt-3">
                                 <input type="submit" value="Update Ticket" class="btn btn-secondary" />
                             </div>
                         </div>

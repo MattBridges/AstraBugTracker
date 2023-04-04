@@ -18,6 +18,7 @@ using AstraBugTracker.Models.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using System.ComponentModel.Design;
 using X.PagedList;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 namespace AstraBugTracker.Controllers
 {
@@ -338,6 +339,7 @@ namespace AstraBugTracker.Controllers
                 return NotFound();
             }
             ModelState.Remove("SubmitterUserId");
+            ModelState.Remove("ProjectId");
             if (ModelState.IsValid)
             {
                 int companyId = User.Identity!.GetCompanyId();
@@ -347,8 +349,9 @@ namespace AstraBugTracker.Controllers
               
                 try
                 {
-                    ticket.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+                    ticket.Updated = DataUtility.GetPostGresDate(DateTime.UtcNow);
                     ticket.SubmitterUserId = _userManager.GetUserId(User);
+                    ticket.ProjectId = oldTicket.ProjectId;
                     await _ticketService.UpdateTicketAsync(ticket);
                 }
                 catch (DbUpdateConcurrencyException)
