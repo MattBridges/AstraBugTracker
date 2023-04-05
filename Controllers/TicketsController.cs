@@ -185,7 +185,7 @@ namespace AstraBugTracker.Controllers
                 ticketAttachment.FileName = ticketAttachment.FormFile.FileName;
                 ticketAttachment.FileType = ticketAttachment.FormFile.ContentType;
 
-				ticketAttachment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+				ticketAttachment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow.ToLocalTime());
                 ticketAttachment.BTUserId = _userManager.GetUserId(User);
 
 				await _ticketService.AddTicketAttachmentAsync(ticketAttachment);
@@ -213,7 +213,7 @@ namespace AstraBugTracker.Controllers
             ticketComment.TicketId = Id;
             ticketComment.Comment = comment;
             ticketComment.UserId= _userManager.GetUserId(User);
-            ticketComment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+            ticketComment.Created = DataUtility.GetPostGresDate(DateTime.UtcNow.ToLocalTime());
             await _ticketCommentService.AddTicketCommentAsync(ticketComment);
 
             //Add History
@@ -259,7 +259,7 @@ namespace AstraBugTracker.Controllers
 
             if (ModelState.IsValid)
             {
-                ticket.Created = DataUtility.GetPostGresDate(DateTime.UtcNow);
+                ticket.Created = DataUtility.GetPostGresDate(DateTime.UtcNow.ToLocalTime());
                 ticket.SubmitterUserId = _userManager.GetUserId(User);
 
 
@@ -349,7 +349,7 @@ namespace AstraBugTracker.Controllers
               
                 try
                 {
-                    ticket.Updated = DataUtility.GetPostGresDate(DateTime.UtcNow);
+                    ticket.Updated = DataUtility.GetPostGresDate(DateTime.UtcNow.ToLocalTime());
                     ticket.SubmitterUserId = _userManager.GetUserId(User);
                     ticket.ProjectId = oldTicket.ProjectId;
                     await _ticketService.UpdateTicketAsync(ticket);

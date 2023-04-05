@@ -171,7 +171,7 @@ namespace AstraBugTracker.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index", "Home");
             }
             return View(company);
         }
