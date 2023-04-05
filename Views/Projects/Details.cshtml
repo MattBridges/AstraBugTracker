@@ -170,33 +170,8 @@
                 </div>
                 <div class="body">
                     <div class="table-responsive" style="overflow-y:auto;height:600px;">
-                        <table class="table table-hover">
-                            <thead class="">
-                                <tr>
-                                    @* Table header *@
-                                    <th>Ticket Title</th>
-                                    <th>Ticket Status</th>
-                                    <th>Developer</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @* Table body *@
+                        <table class="table table-hover">                    
                                 <partial name="_TicketTablePartial" model="@Model.Tickets" />
-                      @*          @foreach (Ticket ticket in Model.Tickets)
-                                {
-                                    <tr>
-                                        <td>
-                                            <a asp-action="Details" asp-controller="Tickets" asp-route-id="@ticket.Id">@ticket.Title</a>
-                                        </td>
-                                        <td>
-                                            @ticket.TicketStatusId
-                                        </td>
-                                        <td>
-                                            @ticket.DeveloperUserId
-                                        </td>
-                                    </tr>
-                                }*@
-                            </tbody>
                         </table>
                     </div>
 
