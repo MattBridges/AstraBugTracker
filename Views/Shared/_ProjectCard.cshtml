@@ -95,7 +95,7 @@
                         @foreach (BTUser member in Model.Members)
                         {
                             <div class="col-3 avatar avatar-sm ms-0">
-                                <img alt="avatar" style="width:40px;" src="@_FileService.ConvertByteArrayToFile(member.ImageFileData!, member.ImageFileType!, (int)DefaultImage.BTUserImage)" class="rounded-circle" />
+                                    <img alt="avatar avatar-sm" style="width:40px;" src="@_FileService.ConvertByteArrayToFile(member.ImageFileData!, member.ImageFileType!, (int)DefaultImage.BTUserImage)" class="rounded-circle" />
                             </div>
                         }
                         </div>
