@@ -87,7 +87,7 @@ namespace AstraBugTracker.Controllers
         [Authorize(Roles = "Admin, Project Manager")]
         public async Task<IActionResult> AssignDeveloper(AssignDeveloperToTicketViewModel viewModel)
         {
-                int companyId= User.Identity!.GetCompanyId();
+            int companyId= User.Identity!.GetCompanyId();
             string? userId = _userManager.GetUserId(User);
             if (!string.IsNullOrEmpty(viewModel.DeveloperId))
             {
@@ -350,6 +350,7 @@ namespace AstraBugTracker.Controllers
                 try
                 {
                     ticket.Updated = DataUtility.GetPostGresDate(DateTime.UtcNow.ToLocalTime());
+                    ticket.Created = oldTicket.Created;
                     ticket.SubmitterUserId = _userManager.GetUserId(User);
                     ticket.ProjectId = oldTicket.ProjectId;
                     await _ticketService.UpdateTicketAsync(ticket);
